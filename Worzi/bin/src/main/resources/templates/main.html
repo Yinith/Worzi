@@ -1,0 +1,54 @@
+{{> cabecera}}
+  
+	<p><h1>Tablero de {{usu.nombreUsuario}}:</h1></p>
+	
+	<div class="contenido">
+	
+	{{#tarjeta}}
+			<div class="card"><h1>{{tarjeta.nombre}}</h1></div>
+				
+			<div class="card">Fecha límite: {{tarjeta.fechaFin}}</div>
+			
+			<div class="card">Descripción: <br>{{tarjeta.descripcion}}</div>
+			
+			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
+		</div>
+		{{/tarjeta}}
+		<br>
+		{{^tarjeta}}
+	    	<p><h2>No hay ninguna lista todavía.</h2></p>
+		{{/tarjeta}}
+	
+	<!--  
+	<div class="row">
+
+		<div class="column">
+			
+			{{#tarjeta}}
+			<div class="card"><h1>{{tarjeta.nombre}}</h1></div>
+				
+			<div class="card">Fecha límite: {{tarjeta.fechaFin}}</div>
+			
+			<div class="card">Descripción: <br>{{tarjeta.descripcion}}</div>
+			
+			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
+		</div>
+		{{/tarjeta}}
+		<br>
+		{{^tarjeta}}
+	    	<p><h2>No hay ninguna lista todavía.</h2></p>
+		{{/tarjeta}}
+		
+	</div>
+	
+	
+	
+	<form action="crearLista" method="post">
+	<p>Nombre de la lista: </p>
+	<p><input type= 'text' name= 'nombre'/></p>
+	<p><input type='submit' value= 'Nueva Lista'/></p>
+	</form>-->
+	</div>
+</body>
+</html>
+

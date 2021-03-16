@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+<body>
+
+<h2>Añadir producto</h2>
+
+ <form action="/productos/nuevoProducto" method="post">
+  <label for="nombre">Nombre:</label>
+  <input minlength="2" id="nombre" name="nombre" type="text"><br><br>
+  
+  <label for="precio">Precio:</label>
+  <input id="precio" min="0" name="precio" step="any" type="number"><br><br>
+
+  <label for="promocion">Oferta:</label>
+  <input id="promocion" min="0" max="100" name="promocion" type="number"><br><br>
+  
+  <label for="stock">Stock:</label>
+  <input id="stock" min="0" name="stock" type="number"><br><br>
+
+  
+  <label for="categoria">Categoría:</label>
+  <input minlength="2" id="categoria" name="categoria" type="text"><br><br>
+  
+  <label for="url">Imagen URL:</label>
+  <input id="url" name="url" type="url"><br><br>
+  
+  <label for="descripcion">Descripción:</label>
+  <textarea cols=40 id="descripcion" name="descripcion" rows=5></textarea><br><br>
+  
+  <input type="submit" value="Subir producto">
+</form>
+
+</body>
+</html>

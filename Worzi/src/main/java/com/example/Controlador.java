@@ -18,8 +18,6 @@ import com.example.tarjeta.TarjetaRepository;
 import com.example.usuario.Usuario;
 import com.example.usuario.UsuarioRepository;
 
-import aplicacion.Actividad;
-import aplicacion.Reserva;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,7 +29,7 @@ import javax.servlet.http.HttpSession;
 public class Controlador {
 
 	int numeroLista = 1;
-	private long usuarioActual;
+	private Usuario usuarioActual;
 	ArrayList<Lista> listasGlobal = new ArrayList<Lista>();
 
 	@Autowired
@@ -62,7 +60,7 @@ public class Controlador {
 
 		Usuario usuario = new Usuario(nombreUsuario, email, contrasenya);
 		usuarioRepository.save(usuario);
-		usuarioActual = usuario.getId();
+		usuarioActual = usuario;
 		model.addAttribute("usu", usuario);
 		model.addAttribute("nombreUsuario", usuario.getNombreUsuario());
 			
@@ -91,15 +89,15 @@ public class Controlador {
 		}
 		*/
 		Optional<Usuario> opt = usuarioRepository.findByNombreUsuarioAndContrasenyaAndEmail(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
-		if(opt.isEmpty()) {
-			return "usuarioNoExiste";
-		}
-		else {
+		if(opt.isPresent()) {
 			Usuario usu = opt.get();
-			usuarioActual = usu.getId();
+			usuarioActual = usu;
 			model.addAttribute("usu", usu);
 	//		sesion.setAttribute("usuarioActual", usu);
 			return "main";
+		}
+		else {
+			return "usuarioNoExiste";
 		}
 
 	}
@@ -165,8 +163,8 @@ public class Controlador {
 		// model.addAttribute("lista", lista);*/
 		
 		Tablero tablero = new Tablero(nombre);
-		usuarioActual.setTableros(tablero);
-		List<Lista> act = tableroRepository.save(tablero);
+		usuarioActual.addTablero(tablero);
+		List<Lista> act = (List<Lista>) tableroRepository.save(tablero);
 
 		return "main";
 	}

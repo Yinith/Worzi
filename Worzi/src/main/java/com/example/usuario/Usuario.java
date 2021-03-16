@@ -95,9 +95,6 @@ public class Usuario {
 		return tableros;
 	}
 	
-	public void setTableros(List<Tablero> tableros) {
-		this.tableros = tableros;
-	}
 	
 	// Metodo sobrecargado que permite obtener un tablero por su indice o directamente encontrando ese objeto en la lista
 	public Tablero getTablero(int index) {
