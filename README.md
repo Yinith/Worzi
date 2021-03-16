@@ -11,7 +11,7 @@ Web application for time management and agile planning.
 
 - MIGUEL GONZALO PÉREZ GONZÁLEZ (INTERLOCUTOR): mg.perez.2017@alumnos.urjc.es // https://github.com/gonpg
 
-- SANTIAGO RAMOS GÓMEZ: 
+- SANTIAGO RAMOS GÓMEZ: s.ramosg.2018@alumnos.urjc.es // https://github.com/sRamosg2018
 
 - TOMASZ WIKTOR PATEREK: 
 
