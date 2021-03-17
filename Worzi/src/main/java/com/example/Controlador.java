@@ -193,7 +193,7 @@ public class Controlador {
 
 		// model.addAttribute("lista", lista);*/
 		
-		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion);
+//		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion, lista);
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("tableros", usuarioActual.getTableros());
 
@@ -213,6 +213,8 @@ public class Controlador {
 		Optional<Tarjeta> opt = tarjetaRepository.findById(id);
 		if(opt.isPresent()) {
 			Tarjeta tarj = opt.get();
+			Lista l = tarj.getListaAsociada();
+			l.removeTarjeta(tarj);
 			tarjetaRepository.delete(tarj);
 		}
 		model.addAttribute("usu", usuarioActual);
@@ -243,7 +245,7 @@ public class Controlador {
 
 		// model.addAttribute("lista", lista);*/
 		
-		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion);
+		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion, lista);
 		lista.addTarjeta(tarjeta);
 		model.addAttribute("tarjeta", tarjeta);
 		model.addAttribute("usu", usuarioActual);

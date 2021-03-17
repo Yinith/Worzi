@@ -1,6 +1,10 @@
 package com.example.tarjeta;
 
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
+
 // import java.sql.Date;
 
 import javax.persistence.Entity;
@@ -8,6 +12,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 import com.example.lista.Lista;
 
@@ -22,46 +27,61 @@ public class Tarjeta {
     private String fechaFin;
     private String color;
     private String descripcion;
+    
+    @ManyToOne
+    private Lista listaAsociada;
 
     // Constructores
     public Tarjeta() {
     }
     
-	public Tarjeta(String nombre, String fecha, String color, String descripcion) {
+	public Tarjeta(String nombre, String fecha, String color, String descripcion, Lista lista) {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = fecha;
 		this.color = color;
 		this.descripcion = descripcion;
+		this.listaAsociada = lista;
 	}
-	public Tarjeta(String nombre, String fecha, String descripcion) {
+	public Tarjeta(String nombre, String fecha, String descripcion, Lista lista) {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = fecha;
 		this.color = "Blanco";
 		this.descripcion = descripcion;
+		this.listaAsociada = lista;
 	}
-	public Tarjeta(String nombre, String fecha) {
+	public Tarjeta(String nombre, String fecha, Lista lista) {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = fecha;
 		this.color = "Blanco";
 		this.descripcion = "";
+		this.listaAsociada = lista;
 	}
-	public Tarjeta(String nombre) {
+	public Tarjeta(String nombre, Lista lista) {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = "";
 		this.color = "Blanco";
 		this.descripcion = "";
+		this.listaAsociada = lista;
 	}
 	
 	public String getNombre() {
 		return nombre;
 	}
-
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
+	}
+
+	public Lista getListaAsociada() {
+		return listaAsociada;
+	}
+
+	public void setListaAsociada(Lista listaAsociada) {
+		this.listaAsociada = listaAsociada;
 	}
 
 	public String getFechaFin() {

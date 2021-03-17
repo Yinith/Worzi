@@ -45,9 +45,10 @@ public class DatabaseUsage implements CommandLineRunner {
         // CREAR AQUI UN TABLERO PARA CADA USUARIO CON 1 LISTA DE VARIAS TARJETAS
         Tablero tU1 = new Tablero("Tablero lista compra", true, "fondo.jpg", "Lista de la compra", u1); //Tablero simple=true
         Lista lU1 = new Lista("Lista compra Mercadona");
-        Tarjeta t1 = new Tarjeta("Arroz");
-        Tarjeta t2 = new Tarjeta("Pollo");
-        Tarjeta t3 = new Tarjeta("Patatas");
+        listaRepository.save(lU1);
+        Tarjeta t1 = new Tarjeta("Arroz", lU1);
+        Tarjeta t2 = new Tarjeta("Pollo", lU1);
+        Tarjeta t3 = new Tarjeta("Patatas", lU1);
         
         lU1.addTarjeta(t1);
         lU1.addTarjeta(t2);
@@ -58,7 +59,6 @@ public class DatabaseUsage implements CommandLineRunner {
         tarjetaRepository.save(t1);
         tarjetaRepository.save(t2);
         tarjetaRepository.save(t3);
-        listaRepository.save(lU1);
         tableroRepository.save(tU1);
         usuarioRepository.save(u1);
         
@@ -66,9 +66,11 @@ public class DatabaseUsage implements CommandLineRunner {
         Tablero tU2 = new Tablero("Tablero Usuario2", false, "fondo.jpg", "Deberes asignaturas", u2); //Tablero simple = false
         Lista lU2 = new Lista("DGP");
         Lista lU3 = new Lista("DAD");
-        t1 = new Tarjeta("Resumen video Historias de Usuario");
-        t2 = new Tarjeta("Sprint 1");
-        t3 = new Tarjeta("Test tema 1");
+        listaRepository.save(lU2);
+        listaRepository.save(lU3);
+        t1 = new Tarjeta("Resumen video Historias de Usuario", lU2);
+        t2 = new Tarjeta("Sprint 1", lU2);
+        t3 = new Tarjeta("Test tema 1", lU3);
         
         lU2.addTarjeta(t1);
         lU2.addTarjeta(t2);
@@ -81,8 +83,7 @@ public class DatabaseUsage implements CommandLineRunner {
         tarjetaRepository.save(t2);
         tarjetaRepository.save(t3);
         
-        listaRepository.save(lU2);
-        listaRepository.save(lU3);
+
         tableroRepository.save(tU2);
         usuarioRepository.save(u2);      
           
