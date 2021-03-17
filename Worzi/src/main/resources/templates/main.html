@@ -1,3 +1,6 @@
+<!DOCTYPE HTML>
+<html lang="es">
+
 {{> cabecera}}
   
 	<p><h1>Tablero de {{usu.nombreUsuario}}:</h1></p>
@@ -7,16 +10,16 @@
 	{{#tarjeta}}
 			<div class="card"><h1>{{tarjeta.nombre}}</h1></div>
 				
-			<div class="card">Fecha límite: {{tarjeta.fechaFin}}</div>
+			<div class="card">Fecha lÃ­mite: {{tarjeta.fechaFin}}</div>
 			
-			<div class="card">Descripción: <br>{{tarjeta.descripcion}}</div>
+			<div class="card">DescripciÃ³n: <br>{{tarjeta.descripcion}}</div>
 			
 			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
 		</div>
 		{{/tarjeta}}
 		<br>
 		{{^tarjeta}}
-	    	<p><h2>No hay ninguna lista todavía.</h2></p>
+	    	<p><h2>No hay ninguna lista todavÃ­a.</h2></p>
 		{{/tarjeta}}
 	
 	<!--  
@@ -27,16 +30,16 @@
 			{{#tarjeta}}
 			<div class="card"><h1>{{tarjeta.nombre}}</h1></div>
 				
-			<div class="card">Fecha límite: {{tarjeta.fechaFin}}</div>
+			<div class="card">Fecha lï¿½mite: {{tarjeta.fechaFin}}</div>
 			
-			<div class="card">Descripción: <br>{{tarjeta.descripcion}}</div>
+			<div class="card">Descripciï¿½n: <br>{{tarjeta.descripcion}}</div>
 			
 			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
 		</div>
 		{{/tarjeta}}
 		<br>
 		{{^tarjeta}}
-	    	<p><h2>No hay ninguna lista todavía.</h2></p>
+	    	<p><h2>No hay ninguna lista todavï¿½a.</h2></p>
 		{{/tarjeta}}
 		
 	</div>

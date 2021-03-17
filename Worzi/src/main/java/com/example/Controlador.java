@@ -42,6 +42,16 @@ public class Controlador {
 	private TarjetaRepository tarjetaRepository;
 
 	
+	@GetMapping("/pagPrincipal")
+	public String paginaInicial(Model model)
+	{
+		model.addAttribute("usu", usuarioActual);
+	    return "main";
+	}
+	
+	
+	
+	
 	@GetMapping("/")
 	public String main() {
 
@@ -118,10 +128,10 @@ public class Controlador {
 		//List<Usuario> usuarioActual = usuarioRepository.findAll();
 		model.addAttribute("usuario", usuarioActual);*/
 		
-		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		String nombre = usuarioActual.getNombreUsuario();
+		
+	
 		//model.addAttribute("usuario", usuarioActual);
-		model.addAttribute("nombre", nombre);
+		model.addAttribute("nombre", usuarioActual.getNombreUsuario());
 		return "miPerfil";
 	}
 
@@ -145,7 +155,7 @@ public class Controlador {
 
 	@PostMapping("/Tablero")
 	public String addTablero(Model model, @RequestParam String nombre,
-			@RequestParam(required=false) String fechaFin , @RequestParam(required=false) String descripcion) {
+			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion) {
 
 		/*model.addAttribute("nombre", nombre);
 		model.addAttribute("fecha", fechaFin);
@@ -176,7 +186,7 @@ public class Controlador {
 
 	@PostMapping("/Lista")
 	public String addLista(Model model, @RequestParam String nombre,
-			@RequestParam(required=false) String fechaFin , @RequestParam(required=false) String descripcion) {
+			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion) {
 
 		/*model.addAttribute("nombre", nombre);
 		model.addAttribute("fecha", fechaFin);
@@ -194,6 +204,7 @@ public class Controlador {
 		// model.addAttribute("lista", lista);*/
 		
 		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion);
+		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("tarjeta", tarjeta);
 
 		return "main";
@@ -202,6 +213,7 @@ public class Controlador {
 	
 	@GetMapping("/crearTarjeta")
 	public String crearTarjeta(Model model) {
+		
 		return "GetTarjeta";
 	}
 
@@ -209,23 +221,26 @@ public class Controlador {
 	public String addTarjeta(Model model, @RequestParam String nombre,
 			@RequestParam(required=false) String fechaFin , @RequestParam(required=false) String descripcion) {
 
-		/*model.addAttribute("nombre", nombre);
-		model.addAttribute("fecha", fechaFin);
-		model.addAttribute("descripcion", descripcion);
+		//model.addAttribute("nombre", nombre);
+		//model.addAttribute("fecha", fechaFin);
+		//model.addAttribute("descripcion", descripcion);
 		
 		Lista lista = new Lista("Lista "+numeroLista);
-		Tarjeta t = new Tarjeta(nombre, fechaFin, descripcion);
+		//Tarjeta t = new Tarjeta(nombre, fechaFin, descripcion);
 
-		model.addAttribute("tarjeta", t);
-		lista.addTarjeta(t);
+		//model.addAttribute("tarjeta", t);
+		//lista.addTarjeta(t);
 
-		List<Tarjeta> tar = tarjetaRepository.findByNombre(nombre);
-		model.addAttribute("tarjeta", tar);
+		//List<Tarjeta> tar = tarjetaRepository.findByNombre(nombre);
+		//model.addAttribute("tarjeta", tar);
 
 		// model.addAttribute("lista", lista);*/
 		
 		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion);
+		lista.addTarjeta(tarjeta);
 		model.addAttribute("tarjeta", tarjeta);
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute(lista);
 
 		return "main";
 	}
