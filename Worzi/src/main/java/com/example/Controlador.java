@@ -30,9 +30,8 @@ import javax.servlet.http.HttpSession;
 @Controller
 public class Controlador {
 
-	int numeroLista = 1;
-	private Usuario usuarioActual;
-	ArrayList<Lista> listasGlobal = new ArrayList<Lista>();
+//	private Usuario usuarioActual;
+	private long userID;
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
@@ -47,13 +46,18 @@ public class Controlador {
 	@GetMapping("/pagPrincipal")
 	public String paginaInicial(Model model)
 	{
-		model.addAttribute("usu", usuarioActual);
+		// Es imprescindible buscarlo en el repositorio para comprobar que existe y cargar los datos actualizados
+		Optional<Usuario> opt = usuarioRepository.findById(userID);
+		Usuario usu = opt.get();
+		
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());
 	    return "main";
 	}
 	
 	@GetMapping("/")
-	public String main() {
-
+	public String main() 
+	{
 		return "pagSesion";
 	}
 	
@@ -69,7 +73,9 @@ public class Controlador {
 
 		Usuario usuario = new Usuario(nombreUsuario, email, contrasenya);
 		usuarioRepository.save(usuario);
-		usuarioActual = usuario;
+//		usuarioActual = usuario;
+		userID = usuario.getId();
+		
 		model.addAttribute("usu", usuario);
 			
 		Tablero t = new Tablero("Tablero de "+usuario.getNombreUsuario(), usuario);
@@ -91,7 +97,8 @@ public class Controlador {
 		Optional<Usuario> opt = usuarioRepository.findByNombreUsuarioAndContrasenyaAndEmail(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
 		if(opt.isPresent()) {
 			Usuario usu = opt.get();
-			usuarioActual = usu;
+//			usuarioActual = usu;
+			userID = usu.getId();
 			model.addAttribute("usu", usu);
 			model.addAttribute("tableros", usu.getTableros());
 			return "main";
@@ -117,26 +124,16 @@ public class Controlador {
 		// prueba
 		//List<Usuario> usuarioActual = usuarioRepository.findAll();
 		model.addAttribute("usuario", usuarioActual);*/
-		
-		
+
 	
-		//model.addAttribute("usuario", usuarioActual);
-		model.addAttribute("nombre", usuarioActual.getNombreUsuario());
+		// Es imprescindible buscarlo en el repositorio para comprobar que existe y cargar los datos actualizados
+		Optional<Usuario> opt = usuarioRepository.findById(userID);
+		Usuario usu = opt.get();
+		
+		
+		model.addAttribute("nombre", usu.getNombreUsuario());
 		return "miPerfil";
 	}
-
-/*
-	@PostMapping("/crearLista")
-	public String crearLista(Model model, @RequestParam String nombre) {
-	
-		Lista l = new Lista(nombre);
-		listasGlobal.add(l);
-		listaRepository.save(l);
-		
-		model.addAttribute("listasGlobal", listasGlobal);
-		
-		return "main";
-	}*/
 	
 	@GetMapping("/crearTablero")
 	public String verTarjeta(Model model) {
@@ -146,6 +143,9 @@ public class Controlador {
 	@PostMapping("/Tablero")
 	public String addTablero(Model model, @RequestParam String nombre,
 			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion) {
+		
+		Optional<Usuario> opt = usuarioRepository.findById(userID);
+		Usuario usu = opt.get();
 
 		/*model.addAttribute("nombre", nombre);
 		model.addAttribute("fecha", fechaFin);
@@ -163,8 +163,9 @@ public class Controlador {
 		// model.addAttribute("lista", lista);*/
 		
 		Tablero tablero = new Tablero(nombre);
-		usuarioActual.addTablero(tablero);
-		List<Lista> act = (List<Lista>) tableroRepository.save(tablero);
+		
+		usu.addTablero(tablero);
+		tableroRepository.save(tablero);
 
 		return "main";
 	}
@@ -175,27 +176,19 @@ public class Controlador {
 	}
 
 	@PostMapping("/Lista")
-	public String addLista(Model model, @RequestParam String nombre,
-			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion) {
-
-		/*model.addAttribute("nombre", nombre);
-		model.addAttribute("fecha", fechaFin);
-		model.addAttribute("descripcion", descripcion);
+	public String addLista(Model model, @RequestParam String nombre) {
 		
-		Lista lista = new Lista("Lista "+numeroLista);
-		Tarjeta t = new Tarjeta(nombre, fechaFin, descripcion);
-
-		model.addAttribute("tarjeta", t);
-		lista.addTarjeta(t);
-
-		List<Tarjeta> tar = tarjetaRepository.findByNombre(nombre);
-		model.addAttribute("tarjeta", tar);
-
-		// model.addAttribute("lista", lista);*/
+		Optional<Usuario> opt = usuarioRepository.findById(userID);
+		Usuario usu = opt.get();
 		
-//		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion, lista);
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("tableros", usuarioActual.getTableros());
+		// Se crea la lista con ese nombre y se añade al tablero del usuario
+		Lista list = new Lista(nombre);
+		listaRepository.save(list);
+		usu.getTablero(0).addLista(list);
+		usuarioRepository.save(usu);
+		
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());
 
 		return "main";
 	}
@@ -210,46 +203,48 @@ public class Controlador {
 	@GetMapping("/borrar/tarjeta/{id}")
 	public String borrarTarjeta(Model model, @PathVariable long id) {
 		
-		Optional<Tarjeta> opt = tarjetaRepository.findById(id);
-		if(opt.isPresent()) {
-			Tarjeta tarj = opt.get();
+		Optional<Tarjeta> optj = tarjetaRepository.findById(id);
+		if(optj.isPresent()) {
+			Tarjeta tarj = optj.get();
 			Lista l = tarj.getListaAsociada();
 			l.removeTarjeta(tarj);
+			listaRepository.save(l);
 			tarjetaRepository.delete(tarj);
 		}
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("tableros", usuarioActual.getTableros());
+		Optional<Usuario> optu = usuarioRepository.findById(userID);
+		Usuario usu = optu.get();
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());
 		return "main";
 	}
 	
 	
-
-	Lista lista = new Lista("Lista "+numeroLista);
-	
 	@PostMapping("/Tarjeta")
-	public String addTarjeta(Model model, @RequestParam String nombre,
-			@RequestParam(required=false) String fechaFin , @RequestParam(required=false) String descripcion) {
+	public String addTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue="") String fechaFin,
+			@RequestParam(defaultValue="") String descripcion, @RequestParam String listaAsociada) {
 
-		//model.addAttribute("nombre", nombre);
-		//model.addAttribute("fecha", fechaFin);
-		//model.addAttribute("descripcion", descripcion);
+		Optional<Usuario> optu = usuarioRepository.findById(userID);
+		Usuario usu = optu.get();
 		
+		Optional<Lista> opt = listaRepository.findByNombre(listaAsociada);
+		Lista list;
+		if (opt.isPresent()) {
+			// Si existe, se usa esa lista.
+			list = opt.get();
+		} 
+		else {
+			// Si no existe, se crea la lista
+			list = new Lista(listaAsociada);
+			listaRepository.save(list);
+			usu.getTablero(0).addLista(list);
+		}
+		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion, list);
+		list.addTarjeta(tarjeta);
+		tarjetaRepository.save(tarjeta);
+		listaRepository.save(list);
 		
-		//Tarjeta t = new Tarjeta(nombre, fechaFin, descripcion);
-
-		//model.addAttribute("tarjeta", t);
-		//lista.addTarjeta(t);
-
-		//List<Tarjeta> tar = tarjetaRepository.findByNombre(nombre);
-		//model.addAttribute("tarjeta", tar);
-
-		// model.addAttribute("lista", lista);*/
-		
-		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion, lista);
-		lista.addTarjeta(tarjeta);
-		model.addAttribute("tarjeta", tarjeta);
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("lista", lista);
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());
 
 		return "main";
 	}

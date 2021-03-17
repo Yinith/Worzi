@@ -1,12 +1,14 @@
 package com.example.lista;
 
+import java.util.Optional;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 
 
 public interface ListaRepository extends JpaRepository<Lista, Long> {
 
-    Lista findByNombre(String nombreLista);
+    Optional<Lista> findByNombre(String nombreLista);
 
    
 
