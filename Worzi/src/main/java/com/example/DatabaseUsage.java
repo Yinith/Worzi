@@ -35,7 +35,7 @@ public class DatabaseUsage implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Usuario u1 = new Usuario("jose", "jose@hola.com", "pass");
-        Usuario u2 = new Usuario("a", "a", "a");
+        Usuario u2 = new Usuario("sara", "sara@hola.com", "pass");
         Usuario u3 = new Usuario("Admin", "a@a.com", "a", true); // El true es para distinguirlo como admin.
        
         usuarioRepository.save(u1);
@@ -63,7 +63,7 @@ public class DatabaseUsage implements CommandLineRunner {
         usuarioRepository.save(u1);
         
         
-        Tablero tU2 = new Tablero("Tablero Usuario2", false, "fondo.jpg", "Deberes asignaturas", u2); //Tablero simple = false
+        Tablero tU2 = new Tablero("Tablero Asignaturas", false, "fondo.jpg", "Deberes asignaturas", u2); //Tablero simple = false
         Lista lU2 = new Lista("DGP");
         Lista lU3 = new Lista("DAD");
         listaRepository.save(lU2);
