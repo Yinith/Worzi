@@ -7,16 +7,16 @@
 	
 	<div class="contenido">
 	
-	{{#tarjeta}}
-			<div class="card"><h1>{{tarjeta.nombre}}</h1></div>
+	{{#lista.tarjetas}}
+			<div class="card"><h1>{{nombre}}</h1></div>
 				
-			<div class="card">Fecha límite: {{tarjeta.fechaFin}}</div>
+			<div class="card">Fecha límite: {{fechaFin}}</div>
 			
-			<div class="card">Descripción: <br>{{tarjeta.descripcion}}</div>
+			<div class="card">Descripción: <br>{{descripcion}}</div>
 			
 			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
 		</div>
-		{{/tarjeta}}
+		{{/lista.tarjetas}}
 		<br>
 		{{^tarjeta}}
 	    	<p><h2>No hay ninguna lista todavía.</h2></p>

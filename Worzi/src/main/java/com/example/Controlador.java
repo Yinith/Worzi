@@ -217,6 +217,8 @@ public class Controlador {
 		return "GetTarjeta";
 	}
 
+	Lista lista = new Lista("Lista "+numeroLista);
+	
 	@PostMapping("/Tarjeta")
 	public String addTarjeta(Model model, @RequestParam String nombre,
 			@RequestParam(required=false) String fechaFin , @RequestParam(required=false) String descripcion) {
@@ -225,7 +227,7 @@ public class Controlador {
 		//model.addAttribute("fecha", fechaFin);
 		//model.addAttribute("descripcion", descripcion);
 		
-		Lista lista = new Lista("Lista "+numeroLista);
+		
 		//Tarjeta t = new Tarjeta(nombre, fechaFin, descripcion);
 
 		//model.addAttribute("tarjeta", t);
@@ -240,7 +242,7 @@ public class Controlador {
 		lista.addTarjeta(tarjeta);
 		model.addAttribute("tarjeta", tarjeta);
 		model.addAttribute("usu", usuarioActual);
-		model.addAttribute(lista);
+		model.addAttribute("lista", lista);
 
 		return "main";
 	}
