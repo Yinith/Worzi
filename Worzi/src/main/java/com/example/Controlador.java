@@ -219,7 +219,7 @@ public class Controlador {
 	}
 	
 	
-	@PostMapping("/Tarjeta")
+	@PostMapping("/Tarjeta/")
 	public String addTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue="") String fechaFin,
 			@RequestParam(defaultValue="") String descripcion, @RequestParam String listaAsociada) {
 
