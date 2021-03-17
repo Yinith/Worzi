@@ -13,7 +13,7 @@ Web application for time management and agile planning.
 
 - SANTIAGO RAMOS GÓMEZ: s.ramosg.2018@alumnos.urjc.es // https://github.com/sRamosg2018
 
-- TOMASZ WIKTOR PATEREK: 
+- TOMASZ WIKTOR PATEREK: tw.paterek.2017@alumnos.urjc.es // https://github.com/konzyy
 
 - CLARA EUGENIA PALOMARES CALVO: 
 
