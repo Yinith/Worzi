@@ -1,53 +1,50 @@
 {{> cabecera}}
-  
-	<p><h1>Tablero de {{usu.nombreUsuario}}:</h1></p>
 	
 	<div class="contenido">
 	
-	{{#lista.tarjetas}}
-			<div class="card"><h1>{{nombre}}</h1></div>
+		<p><h1>Hola, {{usu.nombreUsuario}}!</h1></p>
+		<p><h2>Estos son tus tableros:</h2></p>
+		
+		{{^tableros}}
+			<p align="center"><h3>Aún no tienes tableros.</h3></p>
+		{{/tableros}}
+		
+		{{#tableros}}
+			<div class="container">
+				<p><h1>{{nombre}}</h1></p>
+				<br>
+				{{^listas}}
+		   			<p><h3>No hay ninguna lista todavia.</h3></p>
+				{{/listas}}
+				{{#listas}} 
+					<div class="column">
+						<p><h3>Lista: {{nombre}}</h3></p>
+						{{#tarjetas}}
+							<div class="card">
+								<div class="card-body">
+									<h5 class="card-title" style="color:black;">{{nombre}}</h5>
+									<p class="card-text" style="color:grey;">Fecha limite: {{fechaFin}}</p>
+									<p class="card-text" style="color:grey;">Descripcion: <br>{{descripcion}}</p>
+									<div class="card"><a href="/borrar/tarjeta/{{id}}"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></a></div>
+								</div>
+							</div>	
+						{{/tarjetas}}
+					</div>	
+				{{/listas}} 
 				
-			<div class="card">Fecha límite: {{fechaFin}}</div>
-			
-			<div class="card">Descripción: <br>{{descripcion}}</div>
-			
-			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
-		</div>
-		{{/lista.tarjetas}}
-		<br>
-		{{^tarjeta}}
-	    	<p><h2>No hay ninguna lista todavÃ­a.</h2></p>
-		{{/tarjeta}}
-	
-	<!--  
-	<div class="row">
-
-		<div class="column">
-			
-			{{#tarjeta}}
-			<div class="card"><h1>{{tarjeta.nombre}}</h1></div>
-				
-			<div class="card">Fecha lï¿½mite: {{tarjeta.fechaFin}}</div>
-			
-			<div class="card">Descripciï¿½n: <br>{{tarjeta.descripcion}}</div>
-			
-			<div class="card"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></div>
-		</div>
-		{{/tarjeta}}
-		<br>
-		{{^tarjeta}}
-	    	<p><h2>No hay ninguna lista todavï¿½a.</h2></p>
-		{{/tarjeta}}
+			</div>		
+		{{/tableros}}
 		
 	</div>
 	
-	
-	
-	<form action="crearLista" method="post">
-	<p>Nombre de la lista: </p>
-	<p><input type= 'text' name= 'nombre'/></p>
-	<p><input type='submit' value= 'Nueva Lista'/></p>
-	</form>-->
+		<!--  
+		
+		<form action="crearLista" method="post">
+		<p>Nombre de la lista: </p>
+		<p><input type= 'text' name= 'nombre'/></p>
+		<p><input type='submit' value= 'Nueva Lista'/></p>
+		</form>
+		-->
 	</div>
 </body>
 </html>

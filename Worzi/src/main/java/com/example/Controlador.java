@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -23,6 +24,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -49,9 +51,6 @@ public class Controlador {
 	    return "main";
 	}
 	
-	
-	
-	
 	@GetMapping("/")
 	public String main() {
 
@@ -72,11 +71,11 @@ public class Controlador {
 		usuarioRepository.save(usuario);
 		usuarioActual = usuario;
 		model.addAttribute("usu", usuario);
-		model.addAttribute("nombreUsuario", usuario.getNombreUsuario());
 			
-		Tablero t = new Tablero("Tablero1", usuario);
+		Tablero t = new Tablero("Tablero de "+usuario.getNombreUsuario(), usuario);
 		usuario.addTablero(t);
 		tableroRepository.save(t);
+		model.addAttribute("tableros", usuario.getTableros());
 		return "main";
 	}
 
@@ -89,21 +88,12 @@ public class Controlador {
 	@PostMapping("/usuarioAcceso")
 	public String iniciarSesion(Model model, Usuario usuario, HttpSession sesion)
 	{
-		/*
-		if(usuario.getNombreUsuario().equals("") || usuario.getContrasenya().equals("") || usuario.getEmail().equals(""))
-		{
-			datosIncorrectosIni = true;
-			model.addAttribute("datosIncorrectosIni", datosIncorrectosIni);
-			
-			return "error";
-		}
-		*/
 		Optional<Usuario> opt = usuarioRepository.findByNombreUsuarioAndContrasenyaAndEmail(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
 		if(opt.isPresent()) {
 			Usuario usu = opt.get();
 			usuarioActual = usu;
 			model.addAttribute("usu", usu);
-	//		sesion.setAttribute("usuarioActual", usu);
+			model.addAttribute("tableros", usu.getTableros());
 			return "main";
 		}
 		else {
@@ -205,7 +195,7 @@ public class Controlador {
 		
 		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion);
 		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("tarjeta", tarjeta);
+		model.addAttribute("tableros", usuarioActual.getTableros());
 
 		return "main";
 	}
@@ -216,6 +206,21 @@ public class Controlador {
 		
 		return "GetTarjeta";
 	}
+	
+	@GetMapping("/borrar/tarjeta/{id}")
+	public String borrarTarjeta(Model model, @PathVariable long id) {
+		
+		Optional<Tarjeta> opt = tarjetaRepository.findById(id);
+		if(opt.isPresent()) {
+			Tarjeta tarj = opt.get();
+			tarjetaRepository.delete(tarj);
+		}
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("tableros", usuarioActual.getTableros());
+		return "main";
+	}
+	
+	
 
 	Lista lista = new Lista("Lista "+numeroLista);
 	
