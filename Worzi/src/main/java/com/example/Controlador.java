@@ -19,7 +19,6 @@ import com.example.tarjeta.TarjetaRepository;
 import com.example.usuario.Usuario;
 import com.example.usuario.UsuarioRepository;
 
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -41,19 +40,11 @@ public class Controlador {
 	private ListaRepository listaRepository;
 	@Autowired
 	private TarjetaRepository tarjetaRepository;
+	@Autowired
+	private ServicioUsuarios servicioUsuarios;
 
 	
-	@GetMapping("/pagPrincipal")
-	public String paginaInicial(Model model)
-	{
-		// Es imprescindible buscarlo en el repositorio para comprobar que existe y cargar los datos actualizados
-		Optional<Usuario> opt = usuarioRepository.findById(userID);
-		Usuario usu = opt.get();
-		
-		model.addAttribute("usu", usu);
-		model.addAttribute("tableros", usu.getTableros());
-	    return "main";
-	}
+	//PAGINA DE INICIO
 	
 	@GetMapping("/")
 	public String main() 
@@ -61,13 +52,148 @@ public class Controlador {
 		return "pagSesion";
 	}
 	
+	
+	// GET LOGIN REGISTRO USUARIO
+	
 	@GetMapping("/registrarse")
 	public String registrarse()
 	{
 		return "registrarse";
 	}
 	
+	
+	// POST USUARIO NUEVO
+	
 	@PostMapping("/nuevoUsuario")
+	public String registrarse(Model model, Usuario usuario, HttpSession sesion)
+	{
+		if(usuario.getNombreUsuario().trim().equals("") || usuario.getContrasenya().trim().equals("") || usuario.getEmail().trim().equals(""))
+		{
+			
+			return "error";
+		}
+		else
+		{
+			if(!servicioUsuarios.existeUsuario(usuario))
+			{
+				servicioUsuarios.guardarUsuario(usuario);
+				//Usuario usuarioActual = usuario;
+				model.addAttribute("usu", usuario);
+				sesion.setAttribute("usuarioActual", usuario);
+				return "main";
+			}
+			else
+			{
+				
+				return "error";
+			}
+		}
+	}
+	
+	
+	// GET LOGIN ACCESO
+	
+	@GetMapping("/iniciarSesion")
+	public String iniciarSesion()
+	{
+		return "iniciarSesion";
+	}
+	
+	
+	// POST USUARIO ACCESO
+	
+	@PostMapping("/usuarioAcceso")
+	public String iniciarSesion(Model model, Usuario usuario, HttpSession sesion)
+	{
+		if(usuario.getNombreUsuario().trim().equals("") || usuario.getContrasenya().trim().equals("") || usuario.getEmail().trim().equals(""))
+		{
+			
+			return "error";
+		}
+		else
+		{
+			Usuario usu = servicioUsuarios.getUsuarioByCampos(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
+			if(servicioUsuarios.existeUsuario(usu))
+			{
+				model.addAttribute("usu", usu);
+				sesion.setAttribute("usuarioActual", usu);
+				return "main";
+			}
+			else
+			{
+
+				return "error";
+			}
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// PAGINA PRINCIPAL
+	
+	@GetMapping("/pagPrincipal")
+	public String paginaInicial(Model model, HttpSession sesion, HttpServletRequest request)
+	{
+		// Es imprescindible buscarlo en el repositorio para comprobar que existe y cargar los datos actualizados
+		//Optional<Usuario> opt = usuarioRepository.findById(userID);
+		//Usuario usu = opt.get();
+		//model.addAttribute("usu", usu);
+		//model.addAttribute("tableros", usu.getTableros());
+		
+		String nombre = request.getUserPrincipal().getName();
+		Usuario usuarioActual = servicioUsuarios.getUsuarioByNombre(nombre);
+		sesion.setAttribute("usuarioActual", usuarioActual);
+		model.addAttribute("tableros", usuarioActual.getTableros());
+
+		
+	    return "main";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/*
+	@GetMapping("/nuevoUsuario")
+	public String registrarse1(Model model)
+	{
+		
+		return "registrarse";
+	}
+	*/
+	
+	
+	
+	
+	
+	
+	
+	
+	/*@PostMapping("/nuevoUsuario")
 	public String registrarse(Model model, @RequestParam String nombreUsuario,
 			@RequestParam String email, @RequestParam String contrasenya) {
 
@@ -83,15 +209,15 @@ public class Controlador {
 		tableroRepository.save(t);
 		model.addAttribute("tableros", usuario.getTableros());
 		return "main";
-	}
-
+	}*/
+/*
 	@GetMapping("/iniciarSesion")
 	public String iniciarSesion()
 	{
 		return "iniciarSesion";
 	}
-	
-	@PostMapping("/usuarioAcceso")
+	*/
+	/*@PostMapping("/usuarioAcceso")
 	public String iniciarSesion(Model model, Usuario usuario, HttpSession sesion)
 	{
 		Optional<Usuario> opt = usuarioRepository.findByNombreUsuarioAndContrasenyaAndEmail(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
@@ -101,13 +227,16 @@ public class Controlador {
 			userID = usu.getId();
 			model.addAttribute("usu", usu);
 			model.addAttribute("tableros", usu.getTableros());
+			sesion.setAttribute("usuarioActual", usuario);
 			return "main";
 		}
 		else {
 			return "usuarioNoExiste";
 		}
 
-	}
+	}*/
+	
+	
 
 	@GetMapping("/perfil")
 	public String userProfileView(Model model, HttpSession sesion) {
