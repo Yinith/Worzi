@@ -25,7 +25,7 @@ public class Usuario {
 	private boolean admin;
 	
 	// Relacion bidireccional: el tablero tambien va a saber a que usuario pertenece
-	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true,fetch=FetchType.EAGER)
 	private List<Tablero> tableros;
 
 	

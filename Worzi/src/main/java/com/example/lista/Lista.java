@@ -17,7 +17,7 @@ public class Lista {
     private String nombre;
     
     // Relacion bidireccional: las tarjetas necesitan saber a qué lista pertenecen
- 	@OneToMany(mappedBy = "listaAsociada", cascade = CascadeType.ALL, orphanRemoval = true)
+ 	@OneToMany(mappedBy = "listaAsociada", cascade = CascadeType.ALL, orphanRemoval = true,fetch=FetchType.EAGER)
     private List<Tarjeta> tarjetas;
      
  	

@@ -115,8 +115,12 @@ public class Controlador {
 			Usuario usu = servicioUsuarios.getUsuarioByCampos(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
 			if(servicioUsuarios.existeUsuario(usu))
 			{
-				model.addAttribute("usu", usu);
+				//model.addAttribute("usu", usu);
 				sesion.setAttribute("usuarioActual", usu);
+				Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+				model.addAttribute("usu", usuarioActual);
+				model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+				model.addAttribute("tableros", usuarioActual.getTableros());
 				return "main";
 			}
 			else
@@ -126,20 +130,6 @@ public class Controlador {
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	// PAGINA PRINCIPAL
@@ -153,23 +143,124 @@ public class Controlador {
 		//model.addAttribute("usu", usu);
 		//model.addAttribute("tableros", usu.getTableros());
 		
-		String nombre = request.getUserPrincipal().getName();
-		Usuario usuarioActual = servicioUsuarios.getUsuarioByNombre(nombre);
-		sesion.setAttribute("usuarioActual", usuarioActual);
-		model.addAttribute("tableros", usuarioActual.getTableros());
+		//String nombre = request.getUserPrincipal().getName();
+		//Usuario usuarioActual = servicioUsuarios.getUsuarioByNombre(nombre);
+		//sesion.setAttribute("usuarioActual", usuarioActual);
+		//model.addAttribute("tableros", usuarioActual.getTableros());
 
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		
 	    return "main";
 	}
 	
 	
+	// PERFIL DEL USUARIO
+	
+	@GetMapping("/perfil")
+	public String userProfileView(Model model, HttpSession sesion) {
+		/*String username = "";
+		
+		Optional<Usuario> opt = usuarioRepository.findById(usuarioActual);
+		if(opt.isPresent()) {
+			Usuario user = opt.get();
+			username = user.getNombreUsuario();
+		}
+		
+		model.addAttribute("usuario", username);
+
+		// prueba
+		//List<Usuario> usuarioActual = usuarioRepository.findAll();
+		model.addAttribute("usuario", usuarioActual);*/
+
+	
+		// Es imprescindible buscarlo en el repositorio para comprobar que existe y cargar los datos actualizados
+		/*Optional<Usuario> opt = usuarioRepository.findById(userID);
+		Usuario usu = opt.get();
+		
+		
+		model.addAttribute("nombre", usu.getNombreUsuario());*/
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		
+		
+		return "miPerfil";
+	}
 	
 	
+	// GET PAGINA CREACION TABLERO
+	
+	@GetMapping("/crearTablero")
+	public String crearTablero(Model model) {
+		return "GetTablero";
+	}
 	
 	
+	// POST CREACION TABLERO
+	
+	@PostMapping("/Tablero")
+	public String addTablero(Model model, @RequestParam String nombre,
+			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion, HttpSession sesion) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		
+
+		/*model.addAttribute("nombre", nombre);
+		model.addAttribute("fecha", fechaFin);
+		model.addAttribute("descripcion", descripcion);
+		
+		Lista lista = new Lista("Lista "+numeroLista);
+		Tarjeta t = new Tarjeta(nombre, fechaFin, descripcion);
+
+		model.addAttribute("tarjeta", t);
+		lista.addTarjeta(t);
+
+		List<Tarjeta> tar = tarjetaRepository.findByNombre(nombre);
+		model.addAttribute("tarjeta", tar);
+
+		// model.addAttribute("lista", lista);*/
+		
+		Tablero tablero = new Tablero(nombre);
+		
+		usuarioActual.addTablero(tablero);
+		tableroRepository.save(tablero);
+		model.addAttribute("usuarioActual", usuarioActual.getNombreUsuario());
+
+		return "main";
+	}
 	
 	
+	// POST CREAR LISTA
 	
+	@PostMapping("/Lista")
+	public String addLista(Model model, @RequestParam String nombre, HttpSession sesion) {
+		/*	
+		Optional<Usuario> opt = usuarioRepository.findById(userID);
+		Usuario usu = opt.get();
+			
+		// Se crea la lista con ese nombre y se añade al tablero del usuario
+		Lista list = new Lista(nombre);
+		listaRepository.save(list);
+		usu.getTablero(0).addLista(list);
+		usuarioRepository.save(usu);
+			
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());
+		*/
+		
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		Lista list = new Lista(nombre);
+		listaRepository.save(list);
+		usuarioActual.getTablero(0).addLista(list);
+		model.addAttribute("usuarioActual", usuarioActual);
+		model.addAttribute("tableros", usuarioActual.getTableros());
+
+		return "main";
+	}
 	
 	
 	
@@ -237,9 +328,9 @@ public class Controlador {
 	}*/
 	
 	
-
+	/*
 	@GetMapping("/perfil")
-	public String userProfileView(Model model, HttpSession sesion) {
+	public String userProfileView(Model model, HttpSession sesion) {*/
 		/*String username = "";
 		
 		Optional<Usuario> opt = usuarioRepository.findById(usuarioActual);
@@ -256,26 +347,26 @@ public class Controlador {
 
 	
 		// Es imprescindible buscarlo en el repositorio para comprobar que existe y cargar los datos actualizados
-		Optional<Usuario> opt = usuarioRepository.findById(userID);
+		/*Optional<Usuario> opt = usuarioRepository.findById(userID);
 		Usuario usu = opt.get();
 		
 		
 		model.addAttribute("nombre", usu.getNombreUsuario());
 		return "miPerfil";
-	}
-	
+	}*/
+	/*
 	@GetMapping("/crearTablero")
 	public String verTarjeta(Model model) {
 		return "GetTablero";
-	}
-
+	}*/
+/*
 	@PostMapping("/Tablero")
 	public String addTablero(Model model, @RequestParam String nombre,
 			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion) {
 		
 		Optional<Usuario> opt = usuarioRepository.findById(userID);
 		Usuario usu = opt.get();
-
+*/
 		/*model.addAttribute("nombre", nombre);
 		model.addAttribute("fecha", fechaFin);
 		model.addAttribute("descripcion", descripcion);
@@ -290,20 +381,24 @@ public class Controlador {
 		model.addAttribute("tarjeta", tar);
 
 		// model.addAttribute("lista", lista);*/
-		
+		/*
 		Tablero tablero = new Tablero(nombre);
 		
 		usu.addTablero(tablero);
 		tableroRepository.save(tablero);
 
 		return "main";
-	}
+	}*/
+	
+	// GET PAGINA CREACION DE LISTAS
 	
 	@GetMapping("/crearLista")
 	public String crearLista(Model model) {
 		return "GetLista";
 	}
 
+	
+	/*
 	@PostMapping("/Lista")
 	public String addLista(Model model, @RequestParam String nombre) {
 		
@@ -321,7 +416,7 @@ public class Controlador {
 
 		return "main";
 	}
-	
+	*/
 	
 	@GetMapping("/crearTarjeta")
 	public String crearTarjeta(Model model) {
