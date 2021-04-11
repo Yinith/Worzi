@@ -42,6 +42,8 @@ public class Controlador {
 	private TarjetaRepository tarjetaRepository;
 	@Autowired
 	private ServicioUsuarios servicioUsuarios;
+	@Autowired
+	private ServicioTableros servicioTableros;
 
 	
 	//PAGINA DE INICIO
@@ -149,8 +151,11 @@ public class Controlador {
 		//model.addAttribute("tableros", usuarioActual.getTableros());
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		//List<Tablero> tableros = usuarioActual.getTableros();
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		//model.addAttribute("tableros", usuarioActual.getTableros());
+		//model.addAttribute("tableros", tableros);
 		model.addAttribute("tableros", usuarioActual.getTableros());
 		
 	    return "main";
@@ -186,7 +191,8 @@ public class Controlador {
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		
-		
+		model.addAttribute("tableros", servicioTableros.getTableros());
+		//model.addAttribute("nombre", tablero.getNombre());
 		return "miPerfil";
 	}
 	
@@ -215,9 +221,6 @@ public class Controlador {
 	@PostMapping("/Tablero")
 	public String addTablero(Model model, @RequestParam String nombre,
 			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion, HttpSession sesion) {
-		
-		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
 
 		/*model.addAttribute("nombre", nombre);
 		model.addAttribute("fecha", fechaFin);
@@ -234,12 +237,20 @@ public class Controlador {
 
 		// model.addAttribute("lista", lista);*/
 		
-		Tablero tablero = new Tablero(nombre);
+		//tablero.setOwner(usuarioActual);
+		//usuarioActual.addTablero(tablero);
+		//tableroRepository.save(tablero);
+		//model.addAttribute("usuarioActual", usuarioActual.getNombreUsuario());
 		
-		usuarioActual.addTablero(tablero);
-		tableroRepository.save(tablero);
-		model.addAttribute("usuarioActual", usuarioActual.getNombreUsuario());
-
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		
+		Tablero tablero = new Tablero(nombre,usuarioActual);
+		servicioTableros.guardarTablero(tablero);
+		
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		model.addAttribute("tableros", usuarioActual.getTableros());
+		model.addAttribute("nombre", tablero.getNombre());
 		return "main";
 	}
 	

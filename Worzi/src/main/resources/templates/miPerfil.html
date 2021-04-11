@@ -5,6 +5,9 @@
 		<div class="contenido">
 
 			<h1>Bienvenido a tu perfil {{nombreUsuario}}</h1>
+			
+			{{^tableros}}<li><a href="/crearTarjeta">Tablero: {{nombre}}</a></li>{{/tableros}}
+			
 			<a href="/borrarCuenta"><button>Borrar cuenta</button></a>
 			<a href="/pagPrincipal"><button>Volver</button></a>
 		</div>
