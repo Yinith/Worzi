@@ -190,6 +190,17 @@ public class Controlador {
 		return "miPerfil";
 	}
 	
+	// METODO BORRADO DE CUENTAS
+	
+	@GetMapping("/borrarCuenta")
+	public String accountDELETE(Model model, HttpSession sesion) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		servicioUsuarios.borrarUsuario(usuarioActual.getId());
+		
+		return "pagSesion";
+	}
+	
 	
 	// GET PAGINA CREACION TABLERO
 	
