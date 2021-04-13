@@ -27,14 +27,22 @@ public class Tarjeta {
     private String fechaFin;
     private String color;
     private String descripcion;
-    
+    private String checklist;
     @ManyToOne
     private Lista listaAsociada;
 
     // Constructores
     public Tarjeta() {
     }
-    
+    public Tarjeta(String nombre, String fecha, String color, String descripcion, Lista lista, String checklist) {
+		super();
+		this.nombre = nombre;
+		this.fechaFin = fecha;
+		this.color = color;
+		this.descripcion = descripcion;
+		this.listaAsociada = lista;
+		this.checklist = checklist;
+	}
 	public Tarjeta(String nombre, String fecha, String color, String descripcion, Lista lista) {
 		super();
 		this.nombre = nombre;
