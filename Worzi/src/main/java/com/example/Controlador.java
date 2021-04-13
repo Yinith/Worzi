@@ -126,7 +126,7 @@ public class Controlador {
 				model.addAttribute("usu", usuarioActual);
 				model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 				//model.addAttribute("tableros", usuarioActual.getTableros());
-				model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+				model.addAttribute("tableros", usuarioActual.getTableros());
 				return "main";
 			}
 			else
@@ -161,7 +161,7 @@ public class Controlador {
 		//model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", tableros);
 		//model.addAttribute("tableros", usuarioActual.getTableros());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		
 	    return "main";
 	}
@@ -195,7 +195,7 @@ public class Controlador {
 		
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
 		//model.addAttribute("nombre", tablero.getNombre());
 		return "miPerfil";
@@ -250,11 +250,12 @@ public class Controlador {
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		
 		Tablero tablero = new Tablero(nombre,usuarioActual);
+		usuarioActual.addTablero(tablero);
 		servicioTableros.guardarTablero(tablero);
 		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
 		//model.addAttribute("nombre", tablero.getNombre());
 		return "main";
@@ -273,7 +274,7 @@ public class Controlador {
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		return "main";
 	}
 		
@@ -286,7 +287,7 @@ public class Controlador {
 		List<Tablero> tableros = usuarioActual.getTableros();
 		
 		//model.addAttribute("tableros",tableros);
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", tableros);
 		//model.addAttribute("tableros", servicioTableros.getTableros());
 		
 		return "GetLista";
@@ -306,7 +307,6 @@ public class Controlador {
 		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
 		//model.addAttribute("tableros", servicioTableros.getTableros());
 		return "main";
 	}
@@ -351,7 +351,7 @@ public class Controlador {
 		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
 
@@ -400,7 +400,7 @@ public class Controlador {
 			
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
 
@@ -439,7 +439,7 @@ public class Controlador {
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		return "main";
 	}
 	
@@ -492,7 +492,7 @@ public class Controlador {
 		
 		//model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		return "main";
 	}
 		
@@ -550,7 +550,7 @@ public class Controlador {
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		//model.addAttribute("tableros", servicioTableros.getTableros());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		model.addAttribute("tableros", usuarioActual.getTableros());
 		return "main";
 	}
 	
