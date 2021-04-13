@@ -24,6 +24,11 @@ public class ServicioListas {
 	public Lista getListaById(long id) {
 		return repositorio.findById(id).orElseThrow();
 	}	
+	
+	public Lista getListaByNombre(String nombre) {
+		return repositorio.findByNombre(nombre).orElseThrow();
+	}	
+
 
 	public void borrarLista(Lista list) {
 		repositorio.delete(list);

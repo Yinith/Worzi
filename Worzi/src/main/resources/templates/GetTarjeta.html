@@ -3,14 +3,22 @@
 <form action="/Tarjeta" method="post">
 	<p>Escribe los datos de la tarjeta:</p>
 	
+	<p><label for="tipoAct"><b>Lista asociada:</b></label></p>
+			
+			<select id="tipoAct" name="listaAsociada">
+			    {{#listas}}
+  				        <option value="{{nombre}}">{{nombre}}</option>
+  				{{/listas}}
+			</select>
+	
 	<h1><p>Nombre:</p></h1>
 	<input type='text' name='nombre'>
 	<h1><p>Fecha limite:</p></h1>
 	<input type='text' name='fechaFin'>
 	<h1><p>Descripcion:</p></h1>
 	<input type='text' name='descripcion'>
-	<h1><p>En que lista aparece:</p></h1>
-	<input type='text' name='listaAsociada'>
+
+	
 	<input type='submit' value='Crear'>
 </form>
 

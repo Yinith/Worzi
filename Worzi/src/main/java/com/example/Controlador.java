@@ -46,6 +46,8 @@ public class Controlador {
 	private ServicioTableros servicioTableros;
 	@Autowired
 	private ServicioListas servicioListas;
+	@Autowired
+	private ServicioTarjetas servicioTarjetas;
 	
 	//PAGINA DE INICIO
 	
@@ -157,7 +159,8 @@ public class Controlador {
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		//model.addAttribute("tableros", usuarioActual.getTableros());
 		//model.addAttribute("tableros", tableros);
-		model.addAttribute("tableros", usuarioActual.getTableros());
+		//model.addAttribute("tableros", usuarioActual.getTableros());
+		model.addAttribute("tableros", servicioTableros.getTableros());
 		
 	    return "main";
 	}
@@ -250,7 +253,7 @@ public class Controlador {
 		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", usuarioActual.getTableros());
+		model.addAttribute("tableros", servicioTableros.getTableros());
 		//model.addAttribute("nombre", tablero.getNombre());
 		return "main";
 	}
@@ -264,8 +267,9 @@ public class Controlador {
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		List<Tablero> tableros = usuarioActual.getTableros();
 		
-		model.addAttribute("tableros",tableros);
+		//model.addAttribute("tableros",tableros);
 		
+		model.addAttribute("tableros", servicioTableros.getTableros());
 		
 		return "GetLista";
 	}
@@ -305,9 +309,117 @@ public class Controlador {
 		//usuarioActual.getTablero(tab.getId());
 		
 		//usuarioActual.getTablero(id).addLista(list);
-		model.addAttribute("usuarioActual", usuarioActual);
-		model.addAttribute("tableros", usuarioActual.getTableros());
+		//model.addAttribute("usuarioActual", usuarioActual);
+		
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		
+		//model.addAttribute("tableros", usuarioActual.getTableros());
+		model.addAttribute("tableros", servicioTableros.getTableros());
 
+		return "main";
+	}
+	
+	
+	// GET PAGINA CREAR TARJETA
+	
+	@GetMapping("/crearTarjeta")
+	public String crearTarjeta(Model model, HttpSession sesion) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		//List<Lista> listas = usuarioActual.getListas();
+		
+		//model.addAttribute("tableros",tableros);
+		
+		model.addAttribute("listas", servicioListas.getListas());
+		
+		return "GetTarjeta";
+	}
+	
+	
+	// POST CREAR TARJETA
+	
+	@PostMapping("/Tarjeta")
+	public String addTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue="") String fechaFin,
+			@RequestParam(defaultValue="") String descripcion, @RequestParam String listaAsociada, HttpSession sesion) {
+
+		/*Optional<Usuario> optu = usuarioRepository.findById(userID);
+		Usuario usu = optu.get();
+		
+		Optional<Lista> opt = listaRepository.findByNombre(listaAsociada);
+		Lista list;
+		if (opt.isPresent()) {
+			// Si existe, se usa esa lista.
+			list = opt.get();
+		} 
+		else {
+			// Si no existe, se crea la lista
+			list = new Lista(listaAsociada);
+			listaRepository.save(list);
+			usu.getTablero(0).addLista(list);
+		}
+		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion, list);
+		list.addTarjeta(tarjeta);
+		tarjetaRepository.save(tarjeta);
+		listaRepository.save(list);
+		
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());*/
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		
+		//Lista list = new Lista(listaAsociada);
+		//listaRepository.save(list);
+		Lista list = servicioListas.getListaByNombre(listaAsociada);
+		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion,list);
+		
+		//long id = tab.getId();
+		
+		servicioListas.getListaById(list.getId());
+		list.addTarjeta(tarjeta);
+		
+		servicioTarjetas.guardarTarjeta(tarjeta);
+		servicioListas.guardarLista(list);
+		/*
+		servicioTableros.getTableroById(tab.getId());
+		tab.addLista(list);
+		servicioListas.guardarLista(list);
+		servicioTableros.guardarTablero(tab);
+		*/
+		
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		model.addAttribute("tableros", servicioTableros.getTableros());
+
+		return "main";
+	}
+	
+	// BORRAR TARJETAS
+	
+	@GetMapping("/borrar/tarjeta/{id}")
+	public String borrarTarjeta(Model model, @PathVariable long id, HttpSession sesion) {
+		/*
+		Optional<Tarjeta> optj = tarjetaRepository.findById(id);
+		if(optj.isPresent()) {
+			Tarjeta tarj = optj.get();
+			Lista l = tarj.getListaAsociada();
+			l.removeTarjeta(tarj);
+			listaRepository.save(l);
+			tarjetaRepository.delete(tarj);
+		}
+		Optional<Usuario> optu = usuarioRepository.findById(userID);
+		Usuario usu = optu.get();
+		model.addAttribute("usu", usu);
+		model.addAttribute("tableros", usu.getTableros());*/
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		Tarjeta tar = servicioTarjetas.getTarjetaById(id);
+		servicioTarjetas.borrarTarjeta(tar);
+		//servicioTarjetas.borrarTarjetaById(tarjeta.getId());
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		model.addAttribute("tableros", servicioTableros.getTableros());
+		
 		return "main";
 	}
 	
@@ -466,7 +578,7 @@ public class Controlador {
 		return "main";
 	}
 	*/
-	
+	/*
 	@GetMapping("/crearTarjeta")
 	public String crearTarjeta(Model model) {
 		
@@ -520,6 +632,6 @@ public class Controlador {
 		model.addAttribute("tableros", usu.getTableros());
 
 		return "main";
-	}
+	}*/
 
 }
