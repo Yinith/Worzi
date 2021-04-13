@@ -58,6 +58,12 @@ public class Controlador {
 		return "pagSesion";
 	}
 	
+	@GetMapping("/ayuda")
+	public String ayudaUsuario() 
+	{
+		return "ayuda";
+	}
+	
 	
 	// GET LOGIN REGISTRO USUARIO
 	
