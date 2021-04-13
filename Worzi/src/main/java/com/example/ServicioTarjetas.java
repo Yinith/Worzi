@@ -24,11 +24,9 @@ public class ServicioTarjetas {
 	public Tarjeta getTarjetaById(long id) {
 		return repositorio.findById(id).orElseThrow();
 	}	
-	/*
 	public Tarjeta getTarjetaByNombre(String nombre) {
-		return repositorio.findByNombre(nombre).orElseThrow();
+		return repositorio.findByNombre(nombre);
 	}	
-*/
 
 	public void borrarTarjeta(Tarjeta tarjeta) {
 		repositorio.delete(tarjeta);
@@ -37,6 +35,11 @@ public class ServicioTarjetas {
 	public void borrarTarjetaById(long id) {
 		repositorio.deleteById(id);
 	}
+	
+	public void borrarTarjetaByNombre(String nombre) {
+		repositorio.deleteByNombre(nombre);
+	}
+	
 	public void borrarTodo() {
 		repositorio.deleteAll();
 	}

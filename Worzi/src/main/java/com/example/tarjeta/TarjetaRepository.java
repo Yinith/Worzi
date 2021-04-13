@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface TarjetaRepository extends JpaRepository<Tarjeta, Long> {
 
-    List<Tarjeta> findByNombre(String nomTarjeta);
+    Tarjeta findByNombre(String nomTarjeta);
+
+	void deleteByNombre(String nombre);
 
 }

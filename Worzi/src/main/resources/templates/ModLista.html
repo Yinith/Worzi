@@ -1,0 +1,19 @@
+{{> cabecera}}
+
+<form action="/modLista" method="post">
+	
+	<p><label for="tipoAct"><b>Elegir lista a modificar:</b></label></p>
+			
+			<select id="tipoAct" name="listListas">
+			    {{#listas}}
+  				        <option value="{{nombre}}">{{nombre}}</option>
+  				{{/listas}}
+			</select>
+	<p>Escribe los datos modificados de la tarjeta:</p>
+	<h1><p>Nombre:</p></h1>
+	<input type='text' name='nombre'>
+	
+	<input type='submit' value='Modificar'>
+</form>
+
+</body>

@@ -1,0 +1,24 @@
+{{> cabecera}}
+
+<form action="/modTarjeta" method="post">
+	
+	<p><label for="tipoAct"><b>Elegir tarjeta a modificar:</b></label></p>
+			
+			<select id="tipoAct" name="listTarjetas">
+			    {{#tarjetas}}
+  				        <option value="{{nombre}}">{{nombre}}</option>
+  				{{/tarjetas}}
+			</select>
+	<p>Escribe los datos modificados de la tarjeta:</p>
+	<h1><p>Nombre:</p></h1>
+	<input type='text' name='nombre'>
+	<h1><p>Fecha limite:</p></h1>
+	<input type='text' name='fechaFin'>
+	<h1><p>Descripcion:</p></h1>
+	<input type='text' name='descripcion'>
+
+	
+	<input type='submit' value='Modificar'>
+</form>
+
+</body>
