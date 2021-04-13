@@ -20,6 +20,7 @@ import com.example.usuario.Usuario;
 import com.example.usuario.UsuarioRepository;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -261,9 +262,25 @@ public class Controlador {
 		return "main";
 	}
 	
+	@GetMapping("/editarListas/{{id}}")
+	public String editarListas(Model model, @PathVariable long id, HttpSession sesion) {
+
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		
+		servicioTableros.borrarTableroById(id);
+		
+		
+		
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		//model.addAttribute("tableros", servicioTableros.getTableros());
+		model.addAttribute("tableros", usuarioActual.getTableros());
+		return "main";
+	}
+
 		
 	@GetMapping("/borrarTablero/{id}")
-	public String addTablero(Model model, @PathVariable long id, HttpSession sesion) {
+	public String borrarTablero(Model model, @PathVariable long id, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		
@@ -362,16 +379,16 @@ public class Controlador {
 	//GET MODIFICAR TARJETA
 	
 	
-	@GetMapping("/modLista")
-	public String listaMOD(Model model, HttpSession sesion) {
+	@GetMapping("/editarLista/{id}")
+	public String listaMOD(Model model, @PathVariable long id, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-			
-			
-		model.addAttribute("listas", servicioListas.getListas());
+		
+		Tablero tab = tableroRepository.findById(id).get();
+		
+		model.addAttribute("tablero", tab);
 		return "ModLista";
 	}
-	
 	
 	// POST MODIFICAR LISTAS
 	

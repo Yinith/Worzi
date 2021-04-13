@@ -12,6 +12,7 @@
 		{{#tableros}}
 			<div class="container">
 				<p><h1>{{nombre}}</h1></p>
+				<div><a href="/editarLista/{{id}}"><button style="color:black"><p>Editar listas tablero</p></button></a></div>
 				<div><a href="/borrarTablero/{{id}}"><button style="color:black"><p>Borrar tablero</p></button></a></div>
 				<br>
 				{{^listas}}
@@ -20,6 +21,7 @@
 				{{#listas}} 
 					<div class="column">
 						<p><h3>Lista: {{nombre}}</h3></p>
+						<div><a href="/editarTarjetas/{{id}}"><button style="color:black"><p>Editar tarjetas lista</p></button></a></div>
 						<div><a href="/borrarLista/{{id}}"><button style="color:black"><p>Borrar lista</p></button></a></div>
 						{{#tarjetas}}
 							<div class="card">
