@@ -20,6 +20,10 @@ public class ServicioTableros {
 		return repositorio.findAll();
 	}
 	
+	public Tablero getTableroByNombre(String nombre) {
+		return repositorio.findByNombre(nombre);
+	}	
+	
 	public Tablero getTableroByOwner(Usuario usu) {
 		return repositorio.findByOwner(usu);
 	}	

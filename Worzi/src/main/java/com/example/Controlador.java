@@ -44,7 +44,8 @@ public class Controlador {
 	private ServicioUsuarios servicioUsuarios;
 	@Autowired
 	private ServicioTableros servicioTableros;
-
+	@Autowired
+	private ServicioListas servicioListas;
 	
 	//PAGINA DE INICIO
 	
@@ -250,15 +251,29 @@ public class Controlador {
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		model.addAttribute("tableros", usuarioActual.getTableros());
-		model.addAttribute("nombre", tablero.getNombre());
+		//model.addAttribute("nombre", tablero.getNombre());
 		return "main";
 	}
 	
 	
+	// GET PAGINA CREACION DE LISTAS
+	
+	@GetMapping("/crearLista")
+	public String crearLista(Model model, HttpSession sesion) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		List<Tablero> tableros = usuarioActual.getTableros();
+		
+		model.addAttribute("tableros",tableros);
+		
+		
+		return "GetLista";
+	}
+	
 	// POST CREAR LISTA
 	
 	@PostMapping("/Lista")
-	public String addLista(Model model, @RequestParam String nombre, HttpSession sesion) {
+	public String addLista(Model model, @RequestParam String nombre, @RequestParam String nombreTablero, HttpSession sesion) {
 		/*	
 		Optional<Usuario> opt = usuarioRepository.findById(userID);
 		Usuario usu = opt.get();
@@ -276,8 +291,20 @@ public class Controlador {
 		
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		Lista list = new Lista(nombre);
-		listaRepository.save(list);
-		usuarioActual.getTablero(0).addLista(list);
+		//listaRepository.save(list);
+		Tablero tab = servicioTableros.getTableroByNombre(nombreTablero);
+		//long id = tab.getId();
+		
+		
+		servicioTableros.getTableroById(tab.getId());
+		tab.addLista(list);
+		servicioListas.guardarLista(list);
+		servicioTableros.guardarTablero(tab);
+		//usuarioActual.getTableros();
+		
+		//usuarioActual.getTablero(tab.getId());
+		
+		//usuarioActual.getTablero(id).addLista(list);
 		model.addAttribute("usuarioActual", usuarioActual);
 		model.addAttribute("tableros", usuarioActual.getTableros());
 
@@ -413,12 +440,12 @@ public class Controlador {
 	}*/
 	
 	// GET PAGINA CREACION DE LISTAS
-	
+	/*
 	@GetMapping("/crearLista")
 	public String crearLista(Model model) {
 		return "GetLista";
 	}
-
+*/
 	
 	/*
 	@PostMapping("/Lista")

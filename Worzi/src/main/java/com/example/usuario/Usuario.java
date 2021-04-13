@@ -5,6 +5,7 @@ import javax.persistence.*;
 import com.example.tablero.Tablero;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 @Entity
@@ -39,6 +40,7 @@ public class Usuario {
 		this.email = email;
 		this.contrasenya = contrasenya;
 		this.setAdmin(false);			// Si en la creacion no se indica nada, por defecto el usuario no es admin
+		// this.tableros = new LinkedList<Tablero>();
 		this.tableros = new ArrayList<Tablero>();
 	}
 	
