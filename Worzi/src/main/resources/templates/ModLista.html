@@ -1,20 +1,13 @@
 {{> cabecera}}
 
-
-<form action="/modTablero" method="post">	
-<p><label for="tipoAct"><b>Cambiar nombre del tablero:</b></label></p>
-	<input type='text' name='nombre'>
-	<input type='submit' value='ModTablero'>
-
-
-
 <form action="/modLista" method="post">	
+
 	<p><label for="tipoAct"><b>Elegir lista a modificar:</b></label></p>
 			
-	<select id="tipoAct" name="listListas">
-		{{#tablero.listas}}
+	<select id="tipoAct" name="listaAsociada">
+		{{#listas}}
   			<option value="{{nombre}}">{{nombre}}</option>
-  		{{/tablero.listas}}
+  		{{/listas}}
 	</select>
 			
 	<p>Escribe los datos modificados de la lista:</p>

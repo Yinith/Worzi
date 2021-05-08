@@ -309,26 +309,26 @@ public class Controlador {
 	//GET MODIFICAR TARJETA
 	
 	
-	@GetMapping("/editarLista/{id}")
-	public String listaMOD(Model model, @PathVariable long id, HttpSession sesion) {
+	@GetMapping("/modLista")
+	public String listaMOD(Model model, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		
-		Tablero tab = tableroRepository.findById(id).get();
+		model.addAttribute("listas", servicioListas.getListas());
 		
-		model.addAttribute("tablero", tab);
 		return "ModLista";
 	}
 	
 	// POST MODIFICAR LISTAS
 	
 	@PostMapping("/modLista")
-	public String modLista(Model model, @RequestParam Long id, @RequestParam String nombre, HttpSession sesion) {
+	public String modLista(Model model, @RequestParam String nombre, @RequestParam String listaAsociada, HttpSession sesion) {
 		
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		Lista lista = listaRepository.findById(id).get();
-		lista.setNombre(nombre);
 		
+		Lista l = servicioListas.getListaByNombre(listaAsociada);
+		l.setNombre(nombre);
+		servicioListas.guardarLista(l);
 			
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
