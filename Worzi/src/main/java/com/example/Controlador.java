@@ -431,4 +431,42 @@ public class Controlador {
 		return "checklist";
 	}
 	
+	
+	// GET TEMPLATE MOVER TARJETAS
+	
+	@GetMapping("/moverTarjetas")
+	public String moverTarjetas(Model model, HttpSession sesion) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		
+		model.addAttribute("listas", servicioListas.getListas());
+		model.addAttribute("tarjetas", servicioTarjetas.getTarjetas());
+		
+		return "moverTarjetas";
+	}
+	
+	
+	// POST MOVER TARJETAS
+	
+	@PostMapping("/moverTarjetas")
+	public String actTarjeta(Model model, @RequestParam String listaAsociada, @RequestParam String tarjetaAsociada, HttpSession sesion) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		
+		Lista list = servicioListas.getListaByNombre(listaAsociada);
+		Tarjeta t1 = servicioTarjetas.getTarjetaByNombre(tarjetaAsociada);
+		Tarjeta t2 = new Tarjeta(t1.getNombre(),t1.getFechaFin(),t1.getDescripcion(),list);
+		servicioListas.getListaById(list.getId());
+		list.addTarjeta(t2);
+		servicioTarjetas.guardarTarjeta(t2);
+		servicioListas.guardarLista(list);
+		servicioTarjetas.borrarTarjetaById(t1.getId());
+		
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
+		
+		return "main";
+	}
+	
 }

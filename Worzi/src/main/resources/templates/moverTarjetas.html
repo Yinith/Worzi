@@ -1,0 +1,27 @@
+{{> cabecera}}
+
+<form action="/moverTarjetas" method="post">
+	
+	<p><label for="tipoAct"><b>Seleccionar la tarjeta a modificar:</b></label></p>
+			
+			<select id="tipoAct" name="tarjetaAsociada">
+			    {{#tarjetas}}
+  				        <option value="{{nombre}}">{{nombre}}</option>
+  				{{/tarjetas}}
+			</select>
+			
+			
+	<p><label for="tipoAct"><b>Lista asociada:</b></label></p>
+			
+			<select id="tipoAct" name="listaAsociada">
+			    {{#listas}}
+  				        <option value="{{nombre}}">{{nombre}}</option>
+  				{{/listas}}
+			</select>
+
+	
+	<input type='submit' value='Mover Tarjeta'>
+</form>
+
+</body>
+</html>
