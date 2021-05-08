@@ -454,13 +454,11 @@ public class Controlador {
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		
 		Lista list = servicioListas.getListaByNombre(listaAsociada);
-		Tarjeta t1 = servicioTarjetas.getTarjetaByNombre(tarjetaAsociada);
-		Tarjeta t2 = new Tarjeta(t1.getNombre(),t1.getFechaFin(),t1.getDescripcion(),list);
-		servicioListas.getListaById(list.getId());
-		list.addTarjeta(t2);
-		servicioTarjetas.guardarTarjeta(t2);
+		Tarjeta t = servicioTarjetas.getTarjetaByNombre(tarjetaAsociada);
+		t.setListaAsociada(list);
+		list.addTarjeta(t);
+		servicioTarjetas.guardarTarjeta(t);
 		servicioListas.guardarLista(list);
-		servicioTarjetas.borrarTarjetaById(t1.getId());
 		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
