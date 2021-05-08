@@ -22,7 +22,7 @@ public class ServicioTarjetas {
 	}
 	
 	public Tarjeta getTarjetaById(long id) {
-		return repositorio.findById(id).orElseThrow();
+		return repositorio.findById(id).orElseThrow(null);
 	}	
 	public Tarjeta getTarjetaByNombre(String nombre) {
 		return repositorio.findByNombre(nombre);

@@ -28,6 +28,7 @@ public class Tarjeta {
     private String color;
     private String descripcion;
     private String checklist;
+    
     @ManyToOne
     private Lista listaAsociada;
 

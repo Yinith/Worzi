@@ -35,7 +35,7 @@ public class Tablero {
 	private Usuario owner;
 	
 	// Relacion unidireccional: las listas no necesitan saber a qué tablero pertenecen
-	@OneToMany(orphanRemoval = true,fetch=FetchType.EAGER)
+	@OneToMany(orphanRemoval = true)
 	private List<Lista> listas;
 	 
 	//Constructor

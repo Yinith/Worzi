@@ -19,11 +19,11 @@ public class ServicioUsuarios {
 	}
 	
 	public Usuario getUsuario(long id) {
-		return repositorio.findById(id).orElseThrow();		
+		return repositorio.findById(id).orElseThrow(null);		
 	}
 	
 	public Usuario getUsuarioByNombre(String nombreUsuario) {
-		return repositorio.findByNombreUsuario(nombreUsuario).orElseThrow();		
+		return repositorio.findByNombreUsuario(nombreUsuario).orElseThrow(null);		
 	}
 	
 	public Usuario getUsuarioByCampos(String nombreUsuario, String contrasenya, String email) {
@@ -31,7 +31,7 @@ public class ServicioUsuarios {
 	}
 	
 	public void borrarUsuario(long id) {
-		Usuario usu = repositorio.findById(id).orElseThrow();
+		Usuario usu = repositorio.findById(id).orElseThrow(null);
 		repositorio.delete(usu);
 	}
 	

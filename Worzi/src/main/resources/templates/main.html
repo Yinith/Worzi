@@ -12,7 +12,9 @@
 		{{#tableros}}
 			<div class="container">
 				<p><h1>{{nombre}}</h1></p>
-				<div><a href="/editarLista/{{id}}"><button style="color:black"><p>Editar listas tablero</p></button></a></div>
+				
+				<div><a href="/editarLista/{{id}}"><button style="color:black"><p>Editar tablero</p></button></a></div>
+				
 				<div><a href="/borrarTablero/{{id}}"><button style="color:black"><p>Borrar tablero</p></button></a></div>
 				<br>
 				{{^listas}}
@@ -29,7 +31,7 @@
 									<h5 class="card-title" style="color:black;">{{nombre}}</h5>
 									<p class="card-text" style="color:grey;">Fecha limite: {{fechaFin}}</p>
 									<p class="card-text" style="color:grey;">Descripcion: <br>{{descripcion}}</p>
-									<div class="card"><a href="/borrarTarjeta/{id}"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></a></div>
+									<div class="card"><a href="/borrarTarjeta/{{id}}"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></a></div>
 								</div>
 							</div>	
 						{{/tarjetas}}

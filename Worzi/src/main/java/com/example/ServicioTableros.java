@@ -29,7 +29,7 @@ public class ServicioTableros {
 	}	
 	
 	public Tablero getTableroById(long id) {
-		return repositorio.findById(id).orElseThrow();
+		return repositorio.findById(id).orElseThrow(null);
 	}	
 
 	public void borrarTablero(Tablero tab) {

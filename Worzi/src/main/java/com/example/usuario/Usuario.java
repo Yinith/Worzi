@@ -128,6 +128,8 @@ public class Usuario {
 		return this.tableros.remove(t);
 	}
 	
-	
+	public boolean removeTableroById(long id) {
+		return this.tableros.remove(id);
+	}
 
 }

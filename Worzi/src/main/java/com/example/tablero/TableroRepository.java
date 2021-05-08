@@ -14,5 +14,4 @@ public interface TableroRepository extends JpaRepository<Tablero, Long> {
 
 	Tablero findByOwner(Usuario usu);
 
-
 }

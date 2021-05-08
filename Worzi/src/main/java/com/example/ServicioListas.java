@@ -22,13 +22,13 @@ public class ServicioListas {
 	}
 	
 	public Lista getListaById(long id) {
-		return repositorio.findById(id).orElseThrow();
+		return repositorio.findById(id).orElseThrow(null);
 	}	
 	
 	public Lista getListaByNombre(String nombre) {
-		return repositorio.findByNombre(nombre).orElseThrow();
+		return repositorio.findByNombre(nombre).orElseThrow(null);
 	}	
-
+	
 
 	public void borrarLista(Lista list) {
 		repositorio.delete(list);
