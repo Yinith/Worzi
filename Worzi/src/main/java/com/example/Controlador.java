@@ -386,11 +386,15 @@ public class Controlador {
 	
 	@PostMapping("/modTarjeta")
 	public String modTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue="") String fechaFin,
-			@RequestParam(defaultValue="") String descripcion, @RequestParam String listaAsociada, @RequestParam String listTarjetas, HttpSession sesion) {
+			@RequestParam(defaultValue="") String descripcion, @RequestParam String tarjetaAsociada, HttpSession sesion) {
 		
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		
-		servicioTarjetas.borrarTarjetaByNombre(listTarjetas);
+		Tarjeta t = servicioTarjetas.getTarjetaByNombre(tarjetaAsociada);
+		t.setNombre(nombre);
+		t.setFechaFin(fechaFin);
+		t.setDescripcion(descripcion);
+		servicioTarjetas.guardarTarjeta(t);
 		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
