@@ -1,29 +1,38 @@
 <!DOCTYPE HTML>
 <html lang="es">
 <html>
-	<head>
-		<title>Worzi</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<link rel="stylesheet" href="/styles.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
-		
-	</head>
+<head>
+<title>Worzi</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/styles.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+</head>
 
 <body>
 
-<div class="Div1">
-	<h1>Worzi</h1>
-</div>
+	<nav class="Div1">
+		<h1>Worzi</h1>
+	</nav>
+
+<nav class="nav-area">
 <ul>
-  <li><a href="/pagPrincipal">Mis Tableros</a></li>
-  <li style="float:right"><a class="Activa" href="/">Cerrar Sesión</a></li>
-  <li style="float:right"><a href="/perfil">Perfil</a></li>
-  <li><a href="/crearTablero">Crear tablero</a></li>
-  <li><a href="/crearLista">Crear lista</a></li>
-  <li><a href="/modLista">Modificar listas</a></li>
-  <li><a href="/crearTarjeta">Crear tarjeta</a></li>
-  <li><a href="/moverTarjetas">Mover tarjeta</a></li>
-  <li><a href="/modTarjeta">Modificar tarjetas</a></li>
-  <li><a href="/consultarChecklist">Consultar checklist</a></li>
-</ul>
+	<li><a href="/pagPrincipal">Mis Tableros</a>
+			<ul>
+			{{#tableros}}
+			<li><a href="/pagPrincipal/{{id}}">{{nombre}}</a></li>
+			{{/tableros}}
+		</ul>
+		</li>
+	<li><a href="/crearTablero">Crear tablero</a></li>
+	<li><a href="/crearLista">Crear lista</a></li>
+	<li><a href="/modLista">Modificar listas</a></li>
+	<li><a href="/crearTarjeta">Crear tarjeta</a></li>
+	 <li><a href="/moverTarjetas">Mover tarjeta</a></li>
+	<li><a href="/modTarjeta">Modificar tarjetas</a></li>
+		
+	<li style="float: right"><a href="/perfil">Perfil</a></li>
+	<li style="float: right"><a href="/">Cerrar Sesión</a></li>
+	</ul>
+	</nav>

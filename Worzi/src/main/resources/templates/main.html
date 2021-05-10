@@ -1,57 +1,81 @@
 {{> cabecera}}
-	
-	<div class="contenido">
-	
-		<p><h1>Hola, {{usu.nombreUsuario}}!</h1></p>
-		<p><h2>Estos son tus tableros:</h2></p>
-		
-		{{^tableros}}
-			<p align="center"><h3>Aún no tienes tableros.</h3></p>
-		{{/tableros}}
-		
-		{{#tableros}}
-			<div class="container">
-				<p><h1>{{nombre}}</h1></p>
-				
-				<div><a href="/editarLista/{{id}}"><button style="color:black"><p>Editar tablero</p></button></a></div>
-				
-				<div><a href="/borrarTablero/{{id}}"><button style="color:black"><p>Borrar tablero</p></button></a></div>
-				<br>
-				{{^listas}}
-		   			<p><h3>No hay ninguna lista todavia.</h3></p>
-				{{/listas}}
-				{{#listas}} 
-					<div class="column">
-						<p><h3>Lista: {{nombre}}</h3></p>
-						<div><a href="/editarTarjetas/{{id}}"><button style="color:black"><p>Editar tarjetas lista</p></button></a></div>
-						<div><a href="/borrarLista/{{id}}"><button style="color:black"><p>Borrar lista</p></button></a></div>
-						{{#tarjetas}}
-							<div class="card">
-								<div class="card-body">
-									<h5 class="card-title" style="color:black;">{{nombre}}</h5>
-									<p class="card-text" style="color:grey;">Fecha limite: {{fechaFin}}</p>
-									<p class="card-text" style="color:grey;">Descripcion: <br>{{descripcion}}</p>
-									<div class="card"><a href="/borrarTarjeta/{{id}}"><button  class="cardFondo " style="color:black"><p>Borrar tarjeta</p></button></a></div>
-								</div>
-							</div>	
-						{{/tarjetas}}
-					</div>	
-				{{/listas}} 
-				
-			</div>		
-		{{/tableros}}
-		
+
+<div class="contenido">
+
+	<p>Hola, {{usu.nombreUsuario}}!
+	<h1></h1>
+	</p>
+
+	{{^tablero_default}}
+	<p align="center">
+	<h3>Aún no tienes tableros.</h3>
+	</p>
+	{{/tablero_default}} {{#tablero_default}}
+	<div class="container">
+		<p>
+		<h1>{{nombre}}</h1>
+		</p>
+		<div>
+			<a href="/editarLista/{{id}}"><button style="color: black">
+					<p>Editar tablero</p>
+				</button></a>
+		</div>
+		<div>
+			<a href="/borrarTablero/{{id}}"><button style="color: black">
+					<p>Borrar tablero</p>
+				</button></a>
+		</div>
+
+		<br> {{^listas}}
+		<p>
+		<h3>No hay ninguna lista todavia.</h3>
+		</p>
+		{{/listas}} {{#listas}}
+		<div class="column">
+			<p>
+			<h3>Lista: {{nombre}}</h3>
+			</p>
+			<div>
+				<a href="/editarTarjetas/{{id}}"><button style="color: black">
+						<p>Editar tarjetas lista</p>
+					</button></a>
+			</div>
+			<div>
+				<a href="/borrarLista/{{id}}"><button style="color: black">
+						<p>Borrar lista</p>
+					</button></a>
+			</div>
+			{{#tarjetas}}
+			<div class="card">
+				<div class=card-body data-type={{color}}>
+					<div class="dropdown">
+						<button class="dropbtn">Color</button>
+						<div class="dropdown-content">
+							<a class="card-body-blue" href="/CambiarColor/azul/{{id}}">Azul</a>
+							<a class="card-body-green" href="/CambiarColor/verde/{{id}}">Verde</a>
+							<a class="card-body-orange" href="/CambiarColor/naranja/{{id}}">Naranja</a>
+						</div>
+					</div>
+					<h5 class="card-title" style="color: black;">{{nombre}}</h5>
+					<p class="card-text" style="color: grey;">Fecha limite:
+						{{fechaFin}}</p>
+					<p class="card-text" style="color: grey;">
+						Descripcion: <br>{{descripcion}}
+					</p>
+					<a href="/borrarTarjeta/{{id}}"><button class="cardFondo "
+							style="color: black">
+							<p>Borrar tarjeta</p>
+						</button></a>
+				</div>
+			</div>
+			{{/tarjetas}}
+		</div>
+		{{/listas}}
+
 	</div>
-	
-		<!--  
-		
-		<form action="crearLista" method="post">
-		<p>Nombre de la lista: </p>
-		<p><input type= 'text' name= 'nombre'/></p>
-		<p><input type='submit' value= 'Nueva Lista'/></p>
-		</form>
-		-->
-	</div>
+	{{/tablero_default}}
+
+</div>
+</div>
 </body>
 </html>
-

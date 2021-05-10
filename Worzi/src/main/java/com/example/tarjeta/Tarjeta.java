@@ -29,6 +29,7 @@ public class Tarjeta {
     private String descripcion;
     private String checklist;
     
+    
     @ManyToOne
     private Lista listaAsociada;
 
@@ -56,7 +57,7 @@ public class Tarjeta {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = fecha;
-		this.color = "Blanco";
+		this.color = "blanco";
 		this.descripcion = descripcion;
 		this.listaAsociada = lista;
 	}
@@ -64,7 +65,7 @@ public class Tarjeta {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = fecha;
-		this.color = "Blanco";
+		this.color = "blanco";
 		this.descripcion = "";
 		this.listaAsociada = lista;
 	}
@@ -72,7 +73,7 @@ public class Tarjeta {
 		super();
 		this.nombre = nombre;
 		this.fechaFin = "";
-		this.color = "Blanco";
+		this.color = "blanco";
 		this.descripcion = "";
 		this.listaAsociada = lista;
 	}
@@ -80,6 +81,8 @@ public class Tarjeta {
 	public long getId() {
 		return id;
 	}
+	
+
 
 	public void setId(long id) {
 		this.id = id;

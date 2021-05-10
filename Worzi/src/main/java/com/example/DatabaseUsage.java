@@ -36,8 +36,8 @@ public class DatabaseUsage implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         Usuario u1 = new Usuario("jose", "jose@hola.com", "pass");
-        //Usuario u2 = new Usuario("sara", "sara@hola.com", "pass");
-        Usuario u2 = new Usuario("a", "a", "a");
+        Usuario u2 = new Usuario("sara", "sara@hola.com", "pass");
+        //Usuario u2 = new Usuario("a", "a", "a");
         Usuario u3 = new Usuario("Admin", "a@a.com", "a", true); // El true es para distinguirlo como admin.
        
         usuarioRepository.save(u1);

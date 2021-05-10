@@ -53,179 +53,245 @@ public class Controlador {
 	private ServicioListas servicioListas;
 	@Autowired
 	private ServicioTarjetas servicioTarjetas;
+
 	
-	//PAGINA DE INICIO
-	
+
+	// PAGINA DE INICIO
+
 	@GetMapping("/")
-	public String main() 
-	{
+	public String main() {
 		return "pagSesion";
 	}
-	
+
 	@GetMapping("/ayuda")
-	public String ayudaUsuario() 
-	{
+	public String ayudaUsuario() {
 		return "ayuda";
 	}
-	
-	
+
 	// GET LOGIN REGISTRO USUARIO
-	
+
 	@GetMapping("/registrarse")
-	public String registrarse()
-	{
+	public String registrarse() {
 		return "registrarse";
 	}
-	
-	
+
 	// POST USUARIO NUEVO
-	
+
 	@PostMapping("/nuevoUsuario")
-	public String registrarse(Model model, Usuario usuario, HttpSession sesion)
-	{
-		if(usuario.getNombreUsuario().trim().equals("") || usuario.getContrasenya().trim().equals("") || usuario.getEmail().trim().equals(""))
-		{
-			
+	public String registrarse(Model model, Usuario usuario, HttpSession sesion) {
+		if (usuario.getNombreUsuario().trim().equals("") || usuario.getContrasenya().trim().equals("")
+				|| usuario.getEmail().trim().equals("")) {
+
 			return "error";
-		}
-		else
-		{
-			if(!servicioUsuarios.existeUsuario(usuario))
-			{
+		} else {
+			if (!servicioUsuarios.existeUsuario(usuario)) {
 				servicioUsuarios.guardarUsuario(usuario);
 				model.addAttribute("usu", usuario);
 				sesion.setAttribute("usuarioActual", usuario);
 				return "main";
-			}
-			else
-			{
-				
-				return "error";
-			}
-		}
-	}
-	
-	
-	// GET LOGIN ACCESO
-	
-	@GetMapping("/iniciarSesion")
-	public String iniciarSesion()
-	{
-		return "iniciarSesion";
-	}
-	
-	
-	// POST USUARIO ACCESO
-	
-	@PostMapping("/usuarioAcceso")
-	public String iniciarSesion(Model model, Usuario usuario, HttpSession sesion)
-	{
-		if(usuario.getNombreUsuario().trim().equals("") || usuario.getContrasenya().trim().equals("") || usuario.getEmail().trim().equals(""))
-		{
-			
-			return "error";
-		}
-		else
-		{
-			Usuario usu = servicioUsuarios.getUsuarioByCampos(usuario.getNombreUsuario(), usuario.getContrasenya(), usuario.getEmail());
-			if(servicioUsuarios.existeUsuario(usu))
-			{
-				sesion.setAttribute("usuarioActual", usu);
-				Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-				model.addAttribute("usu", usuarioActual);
-				model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-				model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-				return "main";
-			}
-			else
-			{
+			} else {
 
 				return "error";
 			}
 		}
 	}
-	
-	
+
+	// GET LOGIN ACCESO
+
+	@GetMapping("/iniciarSesion")
+	public String iniciarSesion() {
+		return "iniciarSesion";
+	}
+
+	// POST USUARIO ACCESO
+
+	@PostMapping("/usuarioAcceso")
+	public String iniciarSesion(Model model, @RequestParam String id, @RequestParam String pass, HttpSession sesion) {
+		if (id.equals("") || pass.equals("")) {
+			return "iniciarSesion";
+		} else {
+			for (Usuario usu : usuarioRepository.findAll()) {
+				if ((usu.getNombreUsuario().equals(id) || usu.getEmail().equals(id))
+						&& usu.getContrasenya().equals(pass)) {
+					sesion.setAttribute("usuarioActual", usu);
+					Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+					model.addAttribute("usu", usuarioActual);
+					model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+					model.addAttribute("tableros", usuarioActual.getTableros());			
+					if (usuarioActual.getTableros().size() > 0) {
+						model.addAttribute("tablero_default", usuarioActual.getTableros().get(0));
+					} else {
+
+						model.addAttribute("tablero_default", usuarioActual.getTableros());
+					}
+					return "main";
+				}
+			}
+
+		}
+		return "iniciarSesion";
+	}
 	// PAGINA PRINCIPAL
+
+	@GetMapping("/CambiarColor/verde/{id}")
+	public String colorVerde(Model model, HttpSession sesion, @PathVariable long id) {
+		
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 	
-	@GetMapping("/pagPrincipal")
-	public String paginaInicial(Model model, HttpSession sesion)
-	{
+		Tarjeta t = servicioTarjetas.getTarjetaById(id);
+		t.setColor("verde");
+		servicioTarjetas.guardarTarjeta(t);
+
+		Lista l = t.getListaAsociada();
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(l) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+		return "redirect:/pagPrincipal/";
+	}
+	
+	@GetMapping("/CambiarColor/naranja/{id}")
+	public String colorNaranja(Model model, HttpSession sesion, @PathVariable long id) {
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+	
+		Tarjeta t = servicioTarjetas.getTarjetaById(id);
+		t.setColor("naranja");
+		servicioTarjetas.guardarTarjeta(t);
+
+		Lista l = t.getListaAsociada();
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(l) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+		return "redirect:/pagPrincipal/";
+	}
+	
+	@GetMapping("/CambiarColor/azul/{id}")
+	public String colorAzul(Model model, HttpSession sesion, @PathVariable long id) {
+		
+		
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+	
+		Tarjeta t = servicioTarjetas.getTarjetaById(id);
+		t.setColor("azul");
+		servicioTarjetas.guardarTarjeta(t);
+
+		Lista l = t.getListaAsociada();
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(l) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+		return "redirect:/pagPrincipal/";
+	}
+	
+	
+	@GetMapping("/pagPrincipal/{id}")
+	public String paginaInicialConID(Model model, HttpSession sesion, @PathVariable long id) {
 		
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
-	    return "main";
-	}
-	
-	
-	// PERFIL DEL USUARIO
-	
-	@GetMapping("/perfil")
-	public String userProfileView(Model model, HttpSession sesion) {
-		
-		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		
-		return "miPerfil";
-	}
-	
-	// METODO BORRADO DE CUENTAS
-	
-	@GetMapping("/borrarCuenta")
-	public String accountDELETE(Model model, HttpSession sesion) {
-		
-		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		servicioUsuarios.borrarUsuario(usuarioActual.getId());
-		
-		return "pagSesion";
-	}
-	
-	
-	// GET PAGINA CREACION TABLERO
-	
-	@GetMapping("/crearTablero")
-	public String crearTablero(Model model) {
-		return "GetTablero";
-	}
-	
-	
-	// POST CREACION TABLERO
-	
-	@PostMapping("/Tablero")
-	public String addTablero(Model model, @RequestParam String nombre,
-			@RequestParam(required=false, defaultValue="") String fechaFin , @RequestParam(required=false, defaultValue="") String descripcion, HttpSession sesion) {
-		
-		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
-		Tablero tablero = new Tablero(nombre,usuarioActual);
-		usuarioActual.addTablero(tablero);
-		servicioTableros.guardarTablero(tablero);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
+		model.addAttribute("tableros", usuarioActual.getTableros());
+		//model.addAttribute("color", color);
+		Optional<Tablero> t = tableroRepository.findById(id);
+
+		if (t != null) {
+			model.addAttribute("tablero_default", t.get());
+
+		} else if (usuarioActual.getTableros().size() > 0) {
+			model.addAttribute("tablero_default", usuarioActual.getTableros().get(0));
+
+		} else {
+			model.addAttribute("tablero_default", usuarioActual.getTableros());
+
+		}
+
 		return "main";
 	}
 	
-	@GetMapping("/editarListas/{{id}}")
-	public String editarListas(Model model, @PathVariable long id, HttpSession sesion) {
+	
+	
+
+	@GetMapping("/pagPrincipal")
+	public String paginaInicial(Model model, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
-		servicioTableros.borrarTableroById(id);
-		
 		model.addAttribute("usu", usuarioActual);
 		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
 		model.addAttribute("tableros", usuarioActual.getTableros());
 		
+
+		return "redirect:/pagPrincipal/" + usuarioActual.getTablero(0).getId();
+	}
+
+	// PERFIL DEL USUARIO
+
+	@GetMapping("/perfil")
+	public String userProfileView(Model model, HttpSession sesion) {
+
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+
+		return "miPerfil";
+	}
+
+	// METODO BORRADO DE CUENTAS
+
+	@GetMapping("/borrarCuenta")
+	public String accountDELETE(Model model, HttpSession sesion) {
+
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+		servicioUsuarios.borrarUsuario(usuarioActual.getId());
+
+		return "pagSesion";
+	}
+
+	// GET PAGINA CREACION TABLERO
+
+	@GetMapping("/crearTablero")
+	public String crearTablero(Model model) {
+		return "GetTablero";
+	}
+
+	// POST CREACION TABLERO
+
+	@PostMapping("/Tablero")
+	public String addTablero(Model model, @RequestParam String nombre,
+			@RequestParam(required = false, defaultValue = "") String fechaFin,
+			@RequestParam(required = false, defaultValue = "") String descripcion, HttpSession sesion) {
+
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+
+		Tablero tablero = new Tablero(nombre, usuarioActual);
+		usuarioActual.addTablero(tablero);
+		servicioTableros.guardarTablero(tablero);
+
+		return "redirect:/pagPrincipal/" + tablero.getId();
+		/*
+		 * model.addAttribute("usu", usuarioActual); model.addAttribute("nombreUsuario",
+		 * usuarioActual.getNombreUsuario()); model.addAttribute("tableros",
+		 * servicioTableros.getTableroByOwner(usuarioActual));
+		 * 
+		 * return "main";
+		 */
+	}
+
+	@GetMapping("/editarListas/{{id}}")
+	public String editarListas(Model model, @PathVariable long id, HttpSession sesion) {
+
+		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
+
+		servicioTableros.borrarTableroById(id);
+
+		model.addAttribute("usu", usuarioActual);
+		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
+		model.addAttribute("tableros", usuarioActual.getTableros());
+
 		return "main";
 	}
 
-		
 	@GetMapping("/borrarTablero/{id}")
 	public String borrarTablero(Model model, @PathVariable long id, HttpSession sesion) {
 
@@ -247,228 +313,235 @@ public class Controlador {
 		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
 		return "main";
 	}
-		
+
 	// GET PAGINA CREACION DE LISTAS
-	
+
 	@GetMapping("/crearLista")
 	public String crearLista(Model model, HttpSession sesion) {
-		
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
 		List<Tablero> tableros = usuarioActual.getTableros();
-		
+
 		model.addAttribute("tableros", tableros);
-		
+
 		return "GetLista";
 	}
-	
-	
+
 	// GET BORRAR LISTA
-	
+
 	@GetMapping("/borrarLista/{id}")
 	public String listaDELETE(Model model, @PathVariable long id, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		Tablero t = servicioTableros.getTableroByOwner(usuarioActual);
 		Lista l = servicioListas.getListaById(id);
 		t.removeLista(l);
-		
+
 		servicioListas.borrarListaById(id);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
-		return "main";
+
+		return "redirect:/pagPrincipal/" + t.getId();
+
 	}
-	
-	
+
 	// POST CREAR LISTA
-	
+
 	@PostMapping("/Lista")
-	public String addLista(Model model, @RequestParam String nombre, @RequestParam String nombreTablero, HttpSession sesion) {
-		
+	public String addLista(Model model, @RequestParam String nombre, @RequestParam String nombreTablero,
+			HttpSession sesion) {
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		Lista list = new Lista(nombre);
 		Tablero tab = servicioTableros.getTableroByNombre(nombreTablero);
-		
+
 		servicioTableros.getTableroById(tab.getId());
 		tab.addLista(list);
 		servicioListas.guardarLista(list);
 		servicioTableros.guardarTablero(tab);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
 
-		return "main";
+		return "redirect:/pagPrincipal/" + tab.getId();
+
 	}
-	
-	
-	//GET MODIFICAR TARJETA
-	
-	
+
+	// GET MODIFICAR TARJETA
+
 	@GetMapping("/modLista")
 	public String listaMOD(Model model, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		model.addAttribute("listas", servicioListas.getListas());
-		
+
 		return "ModLista";
 	}
-	
+
 	// POST MODIFICAR LISTAS
-	
+
 	@PostMapping("/modLista")
-	public String modLista(Model model, @RequestParam String nombre, @RequestParam String listaAsociada, HttpSession sesion) {
-		
+	public String modLista(Model model, @RequestParam String nombre, @RequestParam String listaAsociada,
+			HttpSession sesion) {
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		Lista l = servicioListas.getListaByNombre(listaAsociada);
 		l.setNombre(nombre);
 		servicioListas.guardarLista(l);
-			
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
 
-		return "main";
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(l) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+		// SI POR ALGUN MOTIVO QUE DESCONOZCO NO FUNCIONA, PUES TE MANDA CON UN TABLERO
+		// 0
+		return "redirect:/pagPrincipal/" + usuarioActual.getTablero(0).getId();
 	}
-	
-	
+
 	// GET PAGINA CREAR TARJETA
-	
+
 	@GetMapping("/crearTarjeta")
 	public String crearTarjeta(Model model, HttpSession sesion) {
-		
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		model.addAttribute("listas", servicioListas.getListas());
-		
+
 		return "GetTarjeta";
 	}
-	
-	
-	//GET BORRAR TARJETA
-	
-	
+
+	// GET BORRAR TARJETA
+
 	@GetMapping("/borrarTarjeta/{id}")
 	public String tarjetaDELETE(Model model, @PathVariable long id, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
+		Tarjeta t = servicioTarjetas.getTarjetaById(id);
+		Lista l = t.getListaAsociada();
+
 		servicioTarjetas.borrarTarjetaById(id);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
-		return "main";
+
+		/*
+		 * model.addAttribute("usu", usuarioActual); model.addAttribute("nombreUsuario",
+		 * usuarioActual.getNombreUsuario()); model.addAttribute("tableros",
+		 * servicioTableros.getTableroByOwner(usuarioActual));
+		 */
+
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(l) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+
+		return "redirect:/pagPrincipal/" + usuarioActual.getTablero(0).getId();
 	}
-	
-	
-	//GET MODIFICAR TARJETA
-	
-	
+
+	// GET MODIFICAR TARJETA
+
 	@GetMapping("/modTarjeta")
 	public String tarjetaMOD(Model model, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		model.addAttribute("tarjetas", servicioTarjetas.getTarjetas());
 		return "ModTarjeta";
 	}
-	
-	
+
 	// POST MODIFICAR TARJETAS
-	
+
 	@PostMapping("/modTarjeta")
-	public String modTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue="") String fechaFin,
-			@RequestParam(defaultValue="") String descripcion, @RequestParam String tarjetaAsociada, HttpSession sesion) {
-		
+	public String modTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue = "") String fechaFin,
+			@RequestParam(defaultValue = "") String descripcion, @RequestParam String tarjetaAsociada,
+			HttpSession sesion) {
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		Tarjeta t = servicioTarjetas.getTarjetaByNombre(tarjetaAsociada);
 		t.setNombre(nombre);
 		t.setFechaFin(fechaFin);
 		t.setDescripcion(descripcion);
 		servicioTarjetas.guardarTarjeta(t);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
-		return "main";
+
+		Lista l = t.getListaAsociada();
+		/*
+		 * model.addAttribute("usu", usuarioActual); model.addAttribute("nombreUsuario",
+		 * usuarioActual.getNombreUsuario()); model.addAttribute("tableros",
+		 * servicioTableros.getTableroByOwner(usuarioActual));
+		 */
+
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(l) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+
+		return "redirect:/pagPrincipal/" + usuarioActual.getTablero(0).getId();
 	}
-		
-	
+
 	// POST CREAR TARJETA
-	
+
 	@PostMapping("/Tarjeta")
-	public String addTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue="") String fechaFin,
-			@RequestParam(defaultValue="") String descripcion, @RequestParam String listaAsociada, HttpSession sesion) {
-		
+	public String addTarjeta(Model model, @RequestParam String nombre, @RequestParam(defaultValue = "") String fechaFin,
+			@RequestParam(defaultValue = "") String descripcion, @RequestParam String listaAsociada,
+			HttpSession sesion) {
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		Lista list = servicioListas.getListaByNombre(listaAsociada);
-		Tarjeta tarjeta = new Tarjeta(nombre,fechaFin,descripcion,list);
+		Tarjeta tarjeta = new Tarjeta(nombre, fechaFin, descripcion, list);
 		servicioListas.getListaById(list.getId());
 		list.addTarjeta(tarjeta);
 		servicioTarjetas.guardarTarjeta(tarjeta);
 		servicioListas.guardarLista(list);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
-		return "main";
+
+		return "redirect:/pagPrincipal";
+
 	}
-	
-	
-	
+
 	// PRUEBA CHECKLISTS
-	
+
 	@GetMapping("/consultarChecklist")
 	public String checklist(Model model) {
 		return "checklist";
 	}
-	
-	
+
 	// GET TEMPLATE MOVER TARJETAS
-	
+
 	@GetMapping("/moverTarjetas")
 	public String moverTarjetas(Model model, HttpSession sesion) {
-		
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		model.addAttribute("listas", servicioListas.getListas());
 		model.addAttribute("tarjetas", servicioTarjetas.getTarjetas());
-		
+
 		return "moverTarjetas";
 	}
-	
-	
+
 	// POST MOVER TARJETAS
-	
+
 	@PostMapping("/moverTarjetas")
-	public String actTarjeta(Model model, @RequestParam String listaAsociada, @RequestParam String tarjetaAsociada, HttpSession sesion) {
-		
+	public String actTarjeta(Model model, @RequestParam String listaAsociada, @RequestParam String tarjetaAsociada,
+			HttpSession sesion) {
+
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
+
 		Lista list = servicioListas.getListaByNombre(listaAsociada);
 		Tarjeta t = servicioTarjetas.getTarjetaByNombre(tarjetaAsociada);
 		t.setListaAsociada(list);
 		list.addTarjeta(t);
 		servicioTarjetas.guardarTarjeta(t);
 		servicioListas.guardarLista(list);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		
-		return "main";
+		/*
+		 * model.addAttribute("usu", usuarioActual); model.addAttribute("nombreUsuario",
+		 * usuarioActual.getNombreUsuario()); model.addAttribute("tableros",
+		 * servicioTableros.getTableroByOwner(usuarioActual));
+		 */
+
+		for (Tablero tab : usuarioActual.getTableros()) {
+			if (tab.getLista(list) != null)
+				return "redirect:/pagPrincipal/" + usuarioActual.getTablero(tab).getId();
+		}
+
+		return "redirect:/pagPrincipal/" + usuarioActual.getTablero(0).getId();
 	}
-	
+
 }
