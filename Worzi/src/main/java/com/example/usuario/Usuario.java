@@ -129,7 +129,11 @@ public class Usuario {
 	}
 	
 	public boolean removeTableroById(long id) {
-		return this.tableros.remove(id);
+		for(Tablero t: tableros)
+		if (t.getId() == id) {
+			return tableros.remove(t);
+		}
+		return true;	
 	}
 
 }
