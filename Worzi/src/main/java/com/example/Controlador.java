@@ -296,22 +296,27 @@ public class Controlador {
 	public String borrarTablero(Model model, @PathVariable long id, HttpSession sesion) {
 
 		Usuario usuarioActual = (Usuario) sesion.getAttribute("usuarioActual");
-		
-		Tablero tab = servicioTableros.getTableroByOwner(usuarioActual);
-		
-		Collection<Lista> list = servicioListas.getListas();
-		for(Lista l : list)
-		{
-			tab.removeLista(l);
+		if (usuarioActual.getTableros().size() > 1) {
+			Tablero tab = tableroRepository.getOne(id);
+
+			for (Lista l : tab.getListas()) {
+				tab.removeLista(l);
+
+			}
+			usuarioActual.removeTableroById(id);
 			
+			servicioTableros.borrarTableroById(id);
+
+			for (Tablero t : usuarioActual.getTableros()) {
+				if (t != null) {
+					return "redirect:/pagPrincipal/" + t.getId();
+				}
+			}
+			return null; // nunca debería llegar, asi que aqui vale cualquier cosa
+		} else {
+			return "redirect:/pagPrincipal/" + id;
 		}
-		usuarioActual.removeTableroById(id);
-		servicioTableros.borrarTableroById(id);
-		
-		model.addAttribute("usu", usuarioActual);
-		model.addAttribute("nombreUsuario", usuarioActual.getNombreUsuario());
-		model.addAttribute("tableros", servicioTableros.getTableroByOwner(usuarioActual));
-		return "main";
+
 	}
 
 	// GET PAGINA CREACION DE LISTAS
