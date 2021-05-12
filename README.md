@@ -1,7 +1,7 @@
 # Worzi
 Web application for time management and agile planning.
 
-## Uso del ejecutable
+# Uso del ejecutable
 
 ### En Windows
 
@@ -36,7 +36,7 @@ Web application for time management and agile planning.
   `$ java -jar /[ruta hasta el archivo]/Worzi.jar`
 - Abrir un navegador web con la dirección:  http://localhost:8080/ 
 
-## Componentes del grupo: 
+# Componentes del grupo: 
 | Nombre | Correo URJC | GitHub |
 |----------|----------|----------|
 | Miguel Gonzalo Pérez Gonzalez (Interlocutor) | mg.perez.2017@alumnos.urjc.es | https://github.com/gonpg |
