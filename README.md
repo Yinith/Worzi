@@ -4,7 +4,6 @@ Web application for time management and agile planning.
 ## Uso del ejecutable
 
 ### En Windows
-<<<<<<< HEAD
 
 - Es necesario tener instalado Java JRE 1.8.
 - Doble clic en el archivo Worzi.jar en la carpeta "Ejecutable".
@@ -27,8 +26,6 @@ Web application for time management and agile planning.
   `$ java -jar /[ruta hasta el archivo]/Worzi.jar`
   
 - Abrir un navegador web con la dirección http://localhost:8080/ 
-
->>>>>>> 4985d36d02b93ec0b51db4524da883d8defec9f9
 
 ### En Mac o Linux
 
