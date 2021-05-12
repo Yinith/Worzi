@@ -27,7 +27,7 @@ public class Usuario {
 	
 	// Relacion bidireccional: el tablero tambien va a saber a que usuario pertenece
 	@OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true,fetch=FetchType.EAGER)
-	private List<Tablero> tableros;
+	private List<Tablero> tableros  = new ArrayList<Tablero>();
 
 	
 	// Constructores
@@ -41,7 +41,7 @@ public class Usuario {
 		this.contrasenya = contrasenya;
 		this.setAdmin(false);			// Si en la creacion no se indica nada, por defecto el usuario no es admin
 		// this.tableros = new LinkedList<Tablero>();
-		this.tableros = new ArrayList<Tablero>();
+		//this.tableros;
 	}
 	
 	public Usuario(String nombreUsuario, String email, String contrasenya, boolean admin) {
@@ -50,7 +50,7 @@ public class Usuario {
 		this.email = email;
 		this.contrasenya = contrasenya;
 		setAdmin(admin);
-		this.tableros = new ArrayList<Tablero>();
+		//this.tableros;
 	}
 
 	public long getId() {
@@ -116,6 +116,9 @@ public class Usuario {
 	// Metodo que añade un tablero al ArrayList de tableros, devuelve true si lo ha conseguido
 	public boolean addTablero(Tablero t) {
 		return this.tableros.add(t);
+		
+		
+		
 	}
 	
 	// Metodo que borra un tablero del ArrayLst de tablero. Sobrecargado.
@@ -136,4 +139,5 @@ public class Usuario {
 		return true;	
 	}
 
+	
 }
