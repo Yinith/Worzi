@@ -8,24 +8,6 @@ Web application for time management and agile planning.
 - Es necesario tener instalado Java JRE 1.8.
 - Doble clic en el archivo Worzi.jar en la carpeta "Ejecutable".
 - Abrir un navegador web con la dirección:  http://localhost:8080/ 
-=======
-
-- Es necesario tener instalado Java JRE 1.8.
-
-- Doble clic en el archivo Worzi.jar en la carpeta "Ejecutable".
-
-- Abrir un navegador web con la dirección http://localhost:8080/ 
-
-### En Mac o Linux
-
-- Es necesario tener instalado Java JRE 1.8.
-
-- Abrir un Terminal de comandos
-
-- Escribir este comando adaptando la ruta absoluta del archivo en tu sistema de ficheros:
-  `$ java -jar /[ruta hasta el archivo]/Worzi.jar`
-  
-- Abrir un navegador web con la dirección http://localhost:8080/ 
 
 ### En Mac o Linux
 
