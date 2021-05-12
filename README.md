@@ -15,7 +15,7 @@ Web application for time management and agile planning.
 
 - TOMASZ WIKTOR PATEREK: tw.paterek.2017@alumnos.urjc.es // https://github.com/konzyy
 
-- CLARA EUGENIA PALOMARES CALVO: 
+- CLARA EUGENIA PALOMARES CALVO: ce.palomares@alumnos.urjc.es // https://github.com/Yinith
 
 - ALEX PALOMO BARRADO:
 
