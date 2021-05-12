@@ -18,10 +18,13 @@
 
 <nav class="nav-area">
 <ul>
-	<li><a href="/pagPrincipal">Mis Tableros</a>
+	<li><a>Mis Tableros</a>
 			<ul>
 			{{#tableros}}
 			<li><a href="/pagPrincipal/{{id}}">{{nombre}}</a></li>
+			{{/tableros}}
+						{{^tableros}}
+			<li><a>Aun no tienes tableros</a></li>
 			{{/tableros}}
 		</ul>
 		</li>
@@ -31,6 +34,7 @@
 	<li><a href="/crearTarjeta">Crear tarjeta</a></li>
 	 <li><a href="/moverTarjetas">Mover tarjeta</a></li>
 	<li><a href="/modTarjeta">Modificar tarjetas</a></li>
+	<li><a href="/consultarChecklist">Consultar checklist</a></li>
 		
 	<li style="float: right"><a href="/perfil">Perfil</a></li>
 	<li style="float: right"><a href="/">Cerrar Sesión</a></li>
