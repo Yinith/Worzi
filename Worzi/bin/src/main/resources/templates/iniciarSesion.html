@@ -1,27 +1,60 @@
-{{> cabecera}}
-<div class="wrapper">
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<title>Worzi</title>
+<link rel="stylesheet" href="/styles.css">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+body {
+	background-image: url('/fondo.png');
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+</style>
+</head>
+<body>
 
-	<div class="contenido">
-		
-		<div class="iSesion">
+	<div class="Div1">
+		<h1>Worzi</h1>
+	</div>
+	<nav class="nav-area">
+		<ul>
+			<li style="float: right"><a href="/ayuda">FAQ</a></li>
+			<li style="float: right"><a class="Activa" href="/">Inicio</a></li>
+		</ul>
+	</nav>
+	<div class="wrapper">
 
-	<h2>INICIAR SESION</h2>
-	<form action="/usuarioAcceso" method="post">
-	<p>Nombre de usuario</p>
-	<p><input type= 'text' name= 'nombreUsuario'/></p>
-	<p>Clave</p>
-	<p><input type= 'text' name= 'contrasenya'/></p>
-	<p>Correo</p>
-	<p><input type= 'text' name= 'email'/></p>
-	<p><input type='submit' value= 'Iniciar Sesión'/></p>
-	</form>
-	<a href="/"><button class="button botonVOLVER"> Volver </button></a>
-   
-</div>
+		<div class="contenido">
+
+			<div class="iSesion">
+
+				<h2>INICIAR SESION</h2>
+				<form action="/usuarioAcceso" method="post">
+					<p>Nombre de usuario o correo</p>
+					<p>
+						<input type='text' name='id' />
+					</p>
+					<p>Clave</p>
+					<p>
+						<input type='password' name='pass' />
+					</p>
+
+					<p>
+						<input type='submit' value='Iniciar SesiÃ³n' />
+					</p>
+				</form>
+				<a href="/"><button class="button botonVOLVER">Volver</button></a>
+
+
+
+
+			</div>
+
+		</div>
 
 	</div>
-
-</div>
 
 
 

@@ -8,18 +8,14 @@
 
 	{{^tablero_default}}
 	<p align="center">
-	<h3>Aún no tienes tableros.</h3>
+	<h3>Aï¿½n no tienes tableros.</h3>
 	</p>
 	{{/tablero_default}} {{#tablero_default}}
 	<div class="container">
 		<p>
 		<h1>{{nombre}}</h1>
 		</p>
-		<div>
-			<a href="/editarLista/{{id}}"><button style="color: black">
-					<p>Editar tablero</p>
-				</button></a>
-		</div>
+		
 		<div>
 			<a href="/borrarTablero/{{id}}"><button style="color: black">
 					<p>Borrar tablero</p>
@@ -35,11 +31,7 @@
 			<p>
 			<h3>Lista: {{nombre}}</h3>
 			</p>
-			<div>
-				<a href="/editarTarjetas/{{id}}"><button style="color: black">
-						<p>Editar tarjetas lista</p>
-					</button></a>
-			</div>
+			
 			<div>
 				<a href="/borrarLista/{{id}}"><button style="color: black">
 						<p>Borrar lista</p>

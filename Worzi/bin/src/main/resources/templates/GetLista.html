@@ -3,6 +3,14 @@
 <form action="/Lista" method="post">
 	<p>Escribe los datos de la lista:</p>
 	
+	<p><label for="tipoAct"><b>Tablero:</b></label></p>
+			
+			<select id="tipoAct" name="nombreTablero">
+			    {{#tableros}}
+  				        <option value="{{nombre}}">{{nombre}}</option>
+  				{{/tableros}}
+			</select>
+	
 	<h1><p>Nombre:</p></h1>
 	<input type='text' name='nombre'>
 	
